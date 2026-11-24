@@ -1,0 +1,13 @@
+# Metadata riêng của Eclipse workspace (mỗi người một khác)
+.metadata/
+
+# Applet: file sinh ra khi build (chạy lại scripts\build-applet.ps1 là có)
+PasswordVault/bin/
+PasswordVault/build/
+PasswordVault/.gen/
+
+# Linh tinh
+*.log
+.vscode/
+.idea/
+Thumbs.db

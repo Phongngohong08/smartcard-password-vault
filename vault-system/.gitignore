@@ -1,0 +1,9 @@
+# Khoá bí mật của server - KHÔNG đưa lên git, nhưng phải sao lưu riêng
+server/data/
+server/.env
+server/vault-server.exe
+
+web/node_modules/
+web/dist/
+
+agent/build/

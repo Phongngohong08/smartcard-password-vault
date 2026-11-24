@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path=".gen">
+		<attributes>
+			<attribute name="ignore_optional_problems" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="var" path="JC_TOOLS_HOME/lib/api_classic-preview.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:C:\javacard\simulator\docs\api"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="var" path="JC_TOOLS_HOME/lib/api_classic_annotations-preview.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

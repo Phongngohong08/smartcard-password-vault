@@ -1,0 +1,4152 @@
+// converted by version  [v26.0]
+// on Wed Nov 18 23:46:35 GMT+07:00 2026
+
+.package vault {
+	.aid 0x11:0x22:0x33:0x44:0x55:0x0;
+	.version 1.0;
+
+	.imports {
+		0xA0:0x0:0x0:0x0:0x62:0x1:0x1 1.9;		//javacard/framework
+		0xA0:0x0:0x0:0x0:0x62:0x1:0x2 1.9;		//javacard/security
+		0xA0:0x0:0x0:0x0:0x62:0x2:0x1 1.8;		//javacardx/crypto
+		0xA0:0x0:0x0:0x0:0x62:0x0:0x1 1.0;		//java/lang
+	}
+
+	.applet {
+		0x11:0x22:0x33:0x44:0x55:0x0:0x1 VaultApplet;
+	}
+
+	.constantPool {
+		// 0
+		instanceFieldRef byte[] VaultApplet/cardId;
+		// 1
+		instanceFieldRef byte[] VaultApplet/pinSalt;
+		// 2
+		instanceFieldRef byte[] VaultApplet/pinHash;
+		// 3
+		instanceFieldRef byte[] VaultApplet/pinKekSalt;
+		// 4
+		instanceFieldRef byte[] VaultApplet/pukSalt;
+		// 5
+		instanceFieldRef byte[] VaultApplet/pukHash;
+		// 6
+		instanceFieldRef byte[] VaultApplet/pukKekSalt;
+		// 7
+		instanceFieldRef byte[] VaultApplet/mkByPin;
+		// 8
+		instanceFieldRef byte[] VaultApplet/mkByPuk;
+		// 9
+		instanceFieldRef byte[] VaultApplet/profileBlob;
+		// 10
+		instanceFieldRef byte[] VaultApplet/avatarBlob;
+		// 11
+		instanceFieldRef byte[] VaultApplet/avatarLens;
+		// 12
+		instanceFieldRef byte[] VaultApplet/vault;
+		// 13
+		instanceFieldRef byte VaultApplet/cardState;
+		// 14
+		instanceFieldRef 1.20 VaultApplet/adminKey;
+		// 15
+		instanceFieldRef 1.16 VaultApplet/rsaKeyPair;
+		// 16
+		instanceFieldRef byte[] VaultApplet/session;
+		// 17
+		instanceFieldRef byte[] VaultApplet/sigBuf;
+		// 18
+		instanceFieldRef byte[] VaultApplet/scratch;
+		// 19
+		instanceFieldRef byte[] VaultApplet/work;
+		// 20
+		instanceFieldRef byte[] VaultApplet/adminChallenge;
+		// 21
+		instanceFieldRef 1.20 VaultApplet/sessionMk;
+		// 22
+		instanceFieldRef 1.20 VaultApplet/kekKey;
+		// 23
+		instanceFieldRef 1.20 VaultApplet/restoreMk;
+		// 24
+		instanceFieldRef 1.14 VaultApplet/rng;
+		// 25
+		instanceFieldRef 1.11 VaultApplet/sha256;
+		// 26
+		instanceFieldRef 2.1 VaultApplet/aesCbc;
+		// 27
+		instanceFieldRef 1.15 VaultApplet/rsaSigner;
+		// 28
+		instanceFieldRef byte VaultApplet/pinTriesLeft;
+		// 29
+		instanceFieldRef byte VaultApplet/pukTriesLeft;
+		// 30
+		instanceFieldRef byte VaultApplet/profileLen;
+		// 31
+		instanceFieldRef byte VaultApplet/avatarChunks;
+		// 32
+		instanceFieldRef byte VaultApplet/avatarTotal;
+		// 33
+		staticMethodRef 1.11.0(BZ)Ljavacard/security/MessageDigest;;		// javacard/security/MessageDigest.getInstance(BZ)Ljavacard/security/MessageDigest;
+			.descriptor	Ljavacard/security/MessageDigest;	1.11;
+
+		// 34
+		staticMethodRef 0.3.0()V;		// javacard/framework/Applet.<init>()V
+		// 35
+		staticMethodRef 2.1.0(BZ)Ljavacardx/crypto/Cipher;;		// javacardx/crypto/Cipher.getInstance(BZ)Ljavacardx/crypto/Cipher;
+			.descriptor	Ljavacardx/crypto/Cipher;	2.1;
+
+		// 36
+		.classRef 1.16;		// javacard/security/KeyPair
+		// 37
+		staticMethodRef 1.15.0(BZ)Ljavacard/security/Signature;;		// javacard/security/Signature.getInstance(BZ)Ljavacard/security/Signature;
+			.descriptor	Ljavacard/security/Signature;	1.15;
+
+		// 38
+		staticMethodRef 1.16.0(BS)V;		// javacard/security/KeyPair.<init>(BS)V
+		// 39
+		.classRef VaultApplet;
+		// 40
+		staticMethodRef VaultApplet/<init>()V;
+		// 41
+		virtualMethodRef 0.3.2([BSB)V;		// register([BSB)V
+		// 42
+		virtualMethodRef 0.3.3()Z;		// selectingApplet()Z
+		// 43
+		virtualMethodRef 0.10.1()[B;		// getBuffer()[B
+		// 44
+		staticMethodRef 0.7.1(S)V;		// javacard/framework/ISOException.throwIt(S)V
+		// 45
+		staticFieldRef byte[] VaultApplet/VERSION;
+		// 46
+		staticMethodRef 0.16.2([BS[BSS)S;		// javacard/framework/Util.arrayCopyNonAtomic([BS[BSS)S
+		// 47
+		virtualMethodRef 0.10.8(SS)V;		// setOutgoingAndSend(SS)V
+		// 48
+		staticMethodRef VaultApplet/issue(Ljavacard/framework/APDU;)V;
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+		// 49
+		staticMethodRef VaultApplet/getStatus(Ljavacard/framework/APDU;)V;
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+		// 50
+		staticMethodRef VaultApplet/getPubKey(Ljavacard/framework/APDU;)V;
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+		// 51
+		staticMethodRef VaultApplet/verifyPin(Ljavacard/framework/APDU;)V;
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+		// 52
+		staticMethodRef VaultApplet/changePin(Ljavacard/framework/APDU;)V;
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+		// 53
+		staticMethodRef VaultApplet/unblockPuk(Ljavacard/framework/APDU;)V;
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+		// 54
+		staticMethodRef VaultApplet/clearSession()V;
+		// 55
+		staticMethodRef VaultApplet/internalAuth(Ljavacard/framework/APDU;)V;
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+		// 56
+		staticMethodRef VaultApplet/getSignature(Ljavacard/framework/APDU;)V;
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+		// 57
+		staticMethodRef VaultApplet/setProfile(Ljavacard/framework/APDU;)V;
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+		// 58
+		staticMethodRef VaultApplet/getProfile(Ljavacard/framework/APDU;)V;
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+		// 59
+		staticMethodRef VaultApplet/setAvatar(Ljavacard/framework/APDU;)V;
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+		// 60
+		staticMethodRef VaultApplet/getAvatar(Ljavacard/framework/APDU;)V;
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+		// 61
+		staticMethodRef VaultApplet/listSlots(Ljavacard/framework/APDU;)V;
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+		// 62
+		staticMethodRef VaultApplet/addEntry(Ljavacard/framework/APDU;)V;
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+		// 63
+		staticMethodRef VaultApplet/updateMeta(Ljavacard/framework/APDU;)V;
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+		// 64
+		staticMethodRef VaultApplet/setPassword(Ljavacard/framework/APDU;)V;
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+		// 65
+		staticMethodRef VaultApplet/getSlotBlob(Ljavacard/framework/APDU;SS)V;
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+		// 66
+		staticMethodRef VaultApplet/deleteEntry(Ljavacard/framework/APDU;)V;
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+		// 67
+		staticMethodRef VaultApplet/search(Ljavacard/framework/APDU;)V;
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+		// 68
+		staticMethodRef VaultApplet/genPassword(Ljavacard/framework/APDU;)V;
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+		// 69
+		staticMethodRef VaultApplet/backupBegin(Ljavacard/framework/APDU;)V;
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+		// 70
+		staticMethodRef VaultApplet/backupRead(Ljavacard/framework/APDU;)V;
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+		// 71
+		staticMethodRef VaultApplet/restoreBegin(Ljavacard/framework/APDU;)V;
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+		// 72
+		staticMethodRef VaultApplet/restoreWrite(Ljavacard/framework/APDU;)V;
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+		// 73
+		staticMethodRef VaultApplet/adminChallenge(Ljavacard/framework/APDU;)V;
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+		// 74
+		staticMethodRef VaultApplet/adminAuth(Ljavacard/framework/APDU;)V;
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+		// 75
+		staticMethodRef VaultApplet/adminLock(Ljavacard/framework/APDU;)V;
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+		// 76
+		staticMethodRef VaultApplet/revoke()V;
+		// 77
+		staticMethodRef VaultApplet/receive(Ljavacard/framework/APDU;)S;
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+		// 78
+		staticMethodRef VaultApplet/checkCardId([BS)V;
+		// 79
+		staticMethodRef VaultApplet/checkPinFormat([BSS)V;
+		// 80
+		staticMethodRef VaultApplet/checkPukFormat([BSS)V;
+		// 81
+		virtualMethodRef 1.16.1()V;		// genKeyPair()V
+		// 82
+		virtualMethodRef 1.14.3([BSS)S;		// nextBytes([BSS)S
+		// 83
+		staticMethodRef VaultApplet/deriveCredential([BSSSSSS)V;
+		// 84
+		staticMethodRef 0.8.1()V;		// javacard/framework/JCSystem.beginTransaction()V
+		// 85
+		staticMethodRef 0.16.1([BS[BSS)S;		// javacard/framework/Util.arrayCopy([BS[BSS)S
+		// 86
+		staticMethodRef VaultApplet/storePinCredential()V;
+		// 87
+		.classRef 1.12;		// javacard/security/CryptoException
+		// 88
+		staticMethodRef 0.8.13(SB)[B;		// javacard/framework/JCSystem.makeTransientByteArray(SB)[B
+		// 89
+		staticMethodRef 0.8.2()V;		// javacard/framework/JCSystem.commitTransaction()V
+		// 90
+		staticMethodRef VaultApplet/clearScratch()V;
+		// 91
+		virtualMethodRef 1.16.3()Ljavacard/security/PublicKey;;		// getPublic()Ljavacard/security/PublicKey;
+			.descriptor	Ljavacard/security/PublicKey;	1.3;
+
+		// 92
+		.classRef 1.9;		// javacard/security/RSAPublicKey
+		// 93
+		staticMethodRef VaultApplet/requirePinUsable()V;
+		// 94
+		staticMethodRef VaultApplet/checkPinOrThrow([BSS)V;
+		// 95
+		staticMethodRef VaultApplet/unwrapMk([BSS[B[B)V;
+		// 96
+		staticMethodRef VaultApplet/wipeKeysAndSetState(B)V;
+		// 97
+		staticMethodRef VaultApplet/hashWithSalt([B[BSS[BS)V;
+		// 98
+		staticMethodRef 0.16.0([BS[BSS)B;		// javacard/framework/Util.arrayCompare([BS[BSS)B
+		// 99
+		staticMethodRef VaultApplet/requireIssuedAlive()V;
+		// 100
+		staticFieldRef byte[] VaultApplet/AUTH_PREFIX;
+		// 101
+		virtualMethodRef 1.16.2()Ljavacard/security/PrivateKey;;		// getPrivate()Ljavacard/security/PrivateKey;
+			.descriptor	Ljavacard/security/PrivateKey;	1.2;
+
+		// 102
+		virtualMethodRef 1.15.3(Ljavacard/security/Key;B)V;		// init(Ljavacard/security/Key;B)V
+			.descriptor	Ljavacard/security/Key;	1.0;
+
+		// 103
+		virtualMethodRef 1.15.5([BSS[BS)S;		// sign([BSS[BS)S
+		// 104
+		staticMethodRef VaultApplet/requirePin()V;
+		// 105
+		staticFieldRef byte[] VaultApplet/PROFILE_MIN;
+		// 106
+		staticFieldRef byte[] VaultApplet/PROFILE_MAX;
+		// 107
+		staticMethodRef VaultApplet/checkTlv([BSSB[B[B)S;
+		// 108
+		staticMethodRef VaultApplet/encryptToWork([BSS)S;
+		// 109
+		staticMethodRef 1.13.0(BSZ)Ljavacard/security/Key;;		// javacard/security/KeyBuilder.buildKey(BSZ)Ljavacard/security/Key;
+			.descriptor	Ljavacard/security/Key;	1.0;
+
+		// 110
+		staticMethodRef VaultApplet/decryptToScratch([BSS)S;
+		// 111
+		staticMethodRef VaultApplet/sendScratch(Ljavacard/framework/APDU;S)V;
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+		// 112
+		staticMethodRef 1.14.0(B)Ljavacard/security/RandomData;;		// javacard/security/RandomData.getInstance(B)Ljavacard/security/RandomData;
+			.descriptor	Ljavacard/security/RandomData;	1.14;
+
+		// 113
+		.classRef 1.20;		// javacard/security/AESKey
+		// 114
+		staticMethodRef 0.16.3([BSSB)S;		// javacard/framework/Util.arrayFillNonAtomic([BSSB)S
+		// 115
+		staticMethodRef VaultApplet/setBit([BS)V;
+		// 116
+		staticMethodRef VaultApplet/checkMeta([BSS)V;
+		// 117
+		staticMethodRef VaultApplet/usedSlotBase([B)S;
+		// 118
+		staticMethodRef VaultApplet/findTag([BSSB)S;
+		// 119
+		staticMethodRef VaultApplet/tagContains(SB[BSS)Z;
+		// 120
+		staticMethodRef VaultApplet/appendRange(SBS)S;
+		// 121
+		staticFieldRef byte[] VaultApplet/SYMBOLS;
+		// 122
+		staticMethodRef VaultApplet/charClasses([BS)B;
+		// 123
+		staticMethodRef VaultApplet/checkPassphrase(S)V;
+		// 124
+		staticMethodRef VaultApplet/hashWithSalt([BS[BSS[BS)V;
+		// 125
+		virtualMethodRef 2.1.3(Ljavacard/security/Key;B)V;		// init(Ljavacard/security/Key;B)V
+			.descriptor	Ljavacard/security/Key;	1.0;
+
+		// 126
+		virtualMethodRef 2.1.1([BSS[BS)S;		// doFinal([BSS[BS)S
+		// 127
+		staticFieldRef byte[] VaultApplet/BACKUP_CHECK;
+		// 128
+		staticMethodRef VaultApplet/decryptToScratch(Ljavacard/security/AESKey;[BSS)S;
+			.descriptor	Ljavacard/security/AESKey;	1.20;
+
+		// 129
+		staticMethodRef VaultApplet/requireAdmin()V;
+		// 130
+		staticMethodRef VaultApplet/blockPin()V;
+		// 131
+		virtualMethodRef 1.11.4()V;		// reset()V
+		// 132
+		virtualMethodRef 1.11.5([BSS)V;		// update([BSS)V
+		// 133
+		virtualMethodRef 1.11.1([BSS[BS)S;		// doFinal([BSS[BS)S
+		// 134
+		staticMethodRef VaultApplet/pad([BS)S;
+		// 135
+		virtualMethodRef 2.1.4(Ljavacard/security/Key;B[BSS)V;		// init(Ljavacard/security/Key;B[BSS)V
+			.descriptor	Ljavacard/security/Key;	1.0;
+
+		// 136
+		staticMethodRef VaultApplet/unpad([BS)S;
+		// 137
+		staticFieldRef byte[] VaultApplet/META_MIN;
+		// 138
+		staticFieldRef byte[] VaultApplet/META_MAX;
+		// 139
+		staticMethodRef VaultApplet/lower(B)B;
+		// 140
+		virtualMethodRef 0.10.6()S;		// setIncomingAndReceive()S
+		// 141
+		virtualMethodRef 0.10.15()S;		// getIncomingLength()S
+	}
+
+	.class public VaultApplet 0 extends 0.3 {		// extends javacard/framework/Applet
+
+		.fields {
+			private final byte[] cardId 0;		// [B
+			private final byte[] pinSalt 1;		// [B
+			private final byte[] pinHash 2;		// [B
+			private final byte[] pinKekSalt 3;		// [B
+			private final byte[] pukSalt 4;		// [B
+			private final byte[] pukHash 5;		// [B
+			private final byte[] pukKekSalt 6;		// [B
+			private final byte[] mkByPin 7;		// [B
+			private final byte[] mkByPuk 8;		// [B
+			private final 1.20 adminKey 9;		// Ljavacard/security/AESKey;
+			private final 1.16 rsaKeyPair 10;		// Ljavacard/security/KeyPair;
+			private final byte[] profileBlob 11;		// [B
+			private final byte[] avatarBlob 12;		// [B
+			private final byte[] avatarLens 13;		// [B
+			private final byte[] vault 14;		// [B
+			private final byte[] session 15;		// [B
+			private final byte[] sigBuf 16;		// [B
+			private final byte[] scratch 17;		// [B
+			private final byte[] work 18;		// [B
+			private final byte[] adminChallenge 19;		// [B
+			private final 1.20 sessionMk 20;		// Ljavacard/security/AESKey;
+			private final 1.20 kekKey 21;		// Ljavacard/security/AESKey;
+			private final 1.20 restoreMk 22;		// Ljavacard/security/AESKey;
+			private final 1.14 rng 23;		// Ljavacard/security/RandomData;
+			private final 1.11 sha256 24;		// Ljavacard/security/MessageDigest;
+			private final 2.1 aesCbc 25;		// Ljavacardx/crypto/Cipher;
+			private final 1.15 rsaSigner 26;		// Ljavacard/security/Signature;
+			private byte cardState 27;		// B
+			private byte pinTriesLeft 28;		// B
+			private byte pukTriesLeft 29;		// B
+			private byte profileLen 30;		// B
+			private byte avatarChunks 31;		// B
+			private byte avatarTotal 32;		// B
+			private static final byte CLA_VAULT = -128;		// B
+			private static final byte INS_GET_VERSION = 1;		// B
+			private static final byte INS_ISSUE = 16;		// B
+			private static final byte INS_GET_STATUS = 17;		// B
+			private static final byte INS_GET_PUBKEY = 18;		// B
+			private static final byte INS_VERIFY_PIN = 32;		// B
+			private static final byte INS_CHANGE_PIN = 33;		// B
+			private static final byte INS_UNBLOCK_PUK = 34;		// B
+			private static final byte INS_LOGOUT = 35;		// B
+			private static final byte INS_INTERNAL_AUTH = 48;		// B
+			private static final byte INS_GET_SIGNATURE = 49;		// B
+			private static final byte INS_SET_PROFILE = 64;		// B
+			private static final byte INS_GET_PROFILE = 65;		// B
+			private static final byte INS_SET_AVATAR = 66;		// B
+			private static final byte INS_GET_AVATAR = 67;		// B
+			private static final byte INS_LIST_SLOTS = 80;		// B
+			private static final byte INS_ADD_ENTRY = 81;		// B
+			private static final byte INS_UPDATE_META = 82;		// B
+			private static final byte INS_SET_PASSWORD = 83;		// B
+			private static final byte INS_GET_META = 84;		// B
+			private static final byte INS_GET_PASSWORD = 85;		// B
+			private static final byte INS_DELETE_ENTRY = 86;		// B
+			private static final byte INS_SEARCH = 87;		// B
+			private static final byte INS_GEN_PASSWORD = 88;		// B
+			private static final byte INS_BACKUP_BEGIN = 96;		// B
+			private static final byte INS_BACKUP_READ = 97;		// B
+			private static final byte INS_RESTORE_BEGIN = 98;		// B
+			private static final byte INS_RESTORE_WRITE = 99;		// B
+			private static final byte INS_ADMIN_CHALLENGE = 112;		// B
+			private static final byte INS_ADMIN_AUTH = 113;		// B
+			private static final byte INS_ADMIN_LOCK = 114;		// B
+			private static final byte INS_REVOKE = 115;		// B
+			private static final byte STATE_UNISSUED = 0;		// B
+			private static final byte STATE_ACTIVE = 1;		// B
+			private static final byte STATE_PIN_BLOCKED = 2;		// B
+			private static final byte STATE_ADMIN_LOCKED = 3;		// B
+			private static final byte STATE_REVOKED = 4;		// B
+			private static final byte STATE_DISABLED = 5;		// B
+			private static final short SW_WRONG_CODE_BASE = 25536;		// S
+			private static final short SW_BLOCKED = 27011;		// S
+			private static final short SW_NOT_AUTH = 27010;		// S
+			private static final short SW_FULL = 27268;		// S
+			private static final short SW_DATA_NOT_FOUND = 27272;		// S
+			private static final short SW_VERIFY_FAILED = 25344;		// S
+			private static final short CARD_ID_LEN = 8;		// S
+			private static final short SALT_LEN = 16;		// S
+			private static final short HASH_LEN = 32;		// S
+			private static final short KEY_LEN = 16;		// S
+			private static final short IV_LEN = 16;		// S
+			private static final short RSA_LEN = 256;		// S
+			private static final short HALF_RSA_LEN = 128;		// S
+			private static final short CHALLENGE_LEN = 32;		// S
+			private static final short ADMIN_CHAL_LEN = 16;		// S
+			private static final byte PIN_MIN = 6;		// B
+			private static final byte PIN_MAX = 12;		// B
+			private static final byte PUK_LEN = 8;		// B
+			private static final byte PIN_TRIES_MAX = 3;		// B
+			private static final byte PUK_TRIES_MAX = 5;		// B
+			private static final short BLOB_MAX = 224;		// S
+			private static final short AVATAR_CHUNK_MAX = 192;		// S
+			private static final short AVATAR_MAX_CHUNKS = 16;		// S
+			private static final short SLOTS = 32;		// S
+			private static final short SLOT_SIZE = 323;		// S
+			private static final short O_FLAG = 0;		// S
+			private static final short O_META_LEN = 1;		// S
+			private static final short O_META = 2;		// S
+			private static final short O_PW_LEN = 226;		// S
+			private static final short O_PW = 227;		// S
+			private static final short PW_MAX = 64;		// S
+			private static final short KEYWORD_MAX = 32;		// S
+			private static final byte TAG_SERVICE = 16;		// B
+			private static final byte TAG_URL = 17;		// B
+			private static final byte TAG_USERNAME = 18;		// B
+			private static final byte TAG_GROUP = 20;		// B
+			private static final byte GROUP_MAX = 5;		// B
+			private static final byte SEARCH_GROUP_OTHER = -128;		// B
+			private static final byte[] PROFILE_MIN = {1,10,1,1};		// [B
+			private static final byte[] PROFILE_MAX = {64,10,64,16};		// [B
+			private static final byte[] META_MIN = {1,1,1,1,1};		// [B
+			private static final byte[] META_MAX = {32,64,48,48,1};		// [B
+			private static final byte[] SYMBOLS = {33,64,35,36,37,94,38,42,40,41,45,95,61,43,91,93,123,125,59,58,44,46,63,47};		// [B
+			private static final short RND_BATCH = 64;		// S
+			private static final byte PASS_MIN = 8;		// B
+			private static final byte PASS_MAX = 64;		// B
+			private static final short BACKUP_HEADER_LEN = 48;		// S
+			private static final short PW_BLOB_MAX = 96;		// S
+			private static final byte[] BACKUP_CHECK = {86,65,85,76,84,66,65,67,75,85,80,67,72,69,67,75};		// [B
+			private static final byte SES_PIN = 1;		// B
+			private static final byte SES_ADMIN = 2;		// B
+			private static final byte SES_SIG = 4;		// B
+			private static final byte SES_CHAL = 8;		// B
+			private static final byte SES_BACKUP = 16;		// B
+			private static final byte SES_RESTORE = 32;		// B
+			private static final byte[] VERSION = {86,65,85,76,84,32,49,46,48};		// [B
+			private static final byte[] AUTH_PREFIX = {86,65,85,76,84,65,85,84,72};		// [B
+			private static final short S_MK = 0;		// S
+			private static final short S_PIN_SALT = 16;		// S
+			private static final short S_PIN_KEKSALT = 32;		// S
+			private static final short S_PIN_HASH = 48;		// S
+			private static final short S_MK_BY_PIN = 80;		// S
+			private static final short S_PUK_SALT = 96;		// S
+			private static final short S_PUK_KEKSALT = 112;		// S
+			private static final short S_PUK_HASH = 128;		// S
+			private static final short S_MK_BY_PUK = 160;		// S
+			private static final short S_TMP = 176;		// S
+			private static final short BUF_LEN = 256;		// S
+		}
+
+		.publicMethodTable 7 8 {
+			equals(Ljava/lang/Object;)Z 0;
+			register()V 1;
+			register([BSB)V 2;
+			selectingApplet()Z 3;
+			deselect()V 4;
+			getShareableInterfaceObject(Ljavacard/framework/AID;B)Ljavacard/framework/Shareable; 5;
+			select()Z 6;
+			process(Ljavacard/framework/APDU;)V 7;
+		}
+
+		.packageMethodTable 0 {
+		}
+
+		.method private <init>()V {
+			.stack 5;
+			.locals 2;
+
+				L0:	aload_0;
+					invokespecial 34;		// javacard/framework/Applet.<init>()V
+					aload_0;
+					bspush 8;
+					newarray 11;
+					putfield_a 0;		// reference vault/VaultApplet.cardId
+					aload_0;
+					bspush 16;
+					newarray 11;
+					putfield_a 1;		// reference vault/VaultApplet.pinSalt
+					aload_0;
+					bspush 32;
+					newarray 11;
+					putfield_a 2;		// reference vault/VaultApplet.pinHash
+					aload_0;
+					bspush 16;
+					newarray 11;
+					putfield_a 3;		// reference vault/VaultApplet.pinKekSalt
+					aload_0;
+					bspush 16;
+					newarray 11;
+					putfield_a 4;		// reference vault/VaultApplet.pukSalt
+					aload_0;
+					bspush 32;
+					newarray 11;
+					putfield_a 5;		// reference vault/VaultApplet.pukHash
+					aload_0;
+					bspush 16;
+					newarray 11;
+					putfield_a 6;		// reference vault/VaultApplet.pukKekSalt
+					aload_0;
+					bspush 16;
+					newarray 11;
+					putfield_a 7;		// reference vault/VaultApplet.mkByPin
+					aload_0;
+					bspush 16;
+					newarray 11;
+					putfield_a 8;		// reference vault/VaultApplet.mkByPuk
+					aload_0;
+					sspush 224;
+					newarray 11;
+					putfield_a 9;		// reference vault/VaultApplet.profileBlob
+					aload_0;
+					sspush 3584;
+					newarray 11;
+					putfield_a 10;		// reference vault/VaultApplet.avatarBlob
+					aload_0;
+					bspush 16;
+					newarray 11;
+					putfield_a 11;		// reference vault/VaultApplet.avatarLens
+					aload_0;
+					sspush 10336;
+					newarray 11;
+					putfield_a 12;		// reference vault/VaultApplet.vault
+					sconst_0;
+					putfield_b_this 13;		// byte vault/VaultApplet.cardState
+					aload_0;
+					bspush 15;
+					sspush 128;
+					sconst_0;
+					invokestatic 109;		// javacard/security/KeyBuilder.buildKey(BSZ)Ljavacard/security/Key;
+					checkcast 0 113;		// T_CLASSORINTERFACE javacard/security/AESKey
+					putfield_a 14;		// reference vault/VaultApplet.adminKey
+					aload_0;
+					new 36;		// javacard/security/KeyPair
+					dup;
+					sconst_2;
+					sspush 2048;
+					invokespecial 38;		// javacard/security/KeyPair.<init>(BS)V
+					putfield_a 15;		// reference vault/VaultApplet.rsaKeyPair
+					aload_0;
+					sconst_1;
+					sconst_2;
+					invokestatic 88;		// javacard/framework/JCSystem.makeTransientByteArray(SB)[B
+					putfield_a 16;		// reference vault/VaultApplet.session
+					aload_0;
+					sspush 256;
+					sconst_2;
+					invokestatic 88;		// javacard/framework/JCSystem.makeTransientByteArray(SB)[B
+					putfield_a 17;		// reference vault/VaultApplet.sigBuf
+					aload_0;
+					sspush 256;
+					sconst_2;
+					invokestatic 88;		// javacard/framework/JCSystem.makeTransientByteArray(SB)[B
+					putfield_a 18;		// reference vault/VaultApplet.scratch
+					aload_0;
+					sspush 256;
+					sconst_2;
+					invokestatic 88;		// javacard/framework/JCSystem.makeTransientByteArray(SB)[B
+					putfield_a 19;		// reference vault/VaultApplet.work
+					aload_0;
+					bspush 16;
+					sconst_2;
+					invokestatic 88;		// javacard/framework/JCSystem.makeTransientByteArray(SB)[B
+					putfield_a 20;		// reference vault/VaultApplet.adminChallenge
+					aload_0;
+					bspush 14;
+					sspush 128;
+					sconst_0;
+					invokestatic 109;		// javacard/security/KeyBuilder.buildKey(BSZ)Ljavacard/security/Key;
+					checkcast 0 113;		// T_CLASSORINTERFACE javacard/security/AESKey
+					putfield_a 21;		// reference vault/VaultApplet.sessionMk
+					aload_0;
+					bspush 14;
+					sspush 128;
+					sconst_0;
+					invokestatic 109;		// javacard/security/KeyBuilder.buildKey(BSZ)Ljavacard/security/Key;
+					checkcast 0 113;		// T_CLASSORINTERFACE javacard/security/AESKey
+					putfield_a 22;		// reference vault/VaultApplet.kekKey
+					aload_0;
+					bspush 14;
+					sspush 128;
+					sconst_0;
+					invokestatic 109;		// javacard/security/KeyBuilder.buildKey(BSZ)Ljavacard/security/Key;
+					checkcast 0 113;		// T_CLASSORINTERFACE javacard/security/AESKey
+					putfield_a 23;		// reference vault/VaultApplet.restoreMk
+				L1:	bspush 6;
+					invokestatic 112;		// javacard/security/RandomData.getInstance(B)Ljavacard/security/RandomData;
+					astore_1;
+				L2:	goto L5;
+				L3:	astore_2;
+				L4:	sconst_2;
+					invokestatic 112;		// javacard/security/RandomData.getInstance(B)Ljavacard/security/RandomData;
+					astore_1;
+				L5:	aload_1;
+					putfield_a_this 24;		// reference vault/VaultApplet.rng
+					aload_0;
+					sconst_4;
+					sconst_0;
+					invokestatic 33;		// javacard/security/MessageDigest.getInstance(BZ)Ljavacard/security/MessageDigest;
+					putfield_a 25;		// reference vault/VaultApplet.sha256
+					aload_0;
+					bspush 13;
+					sconst_0;
+					invokestatic 35;		// javacardx/crypto/Cipher.getInstance(BZ)Ljavacardx/crypto/Cipher;
+					putfield_a 26;		// reference vault/VaultApplet.aesCbc
+					aload_0;
+					bspush 40;
+					sconst_0;
+					invokestatic 37;		// javacard/security/Signature.getInstance(BZ)Ljavacard/security/Signature;
+					putfield_a 27;		// reference vault/VaultApplet.rsaSigner
+					return;
+			.exceptionTable {
+				// start_block end_block handler_block catch_type_index
+				L1 L2 L3 87;
+			}
+		}
+
+		.method public static install([BSB)V 0 {
+			.stack 5;
+			.locals 0;
+
+				L0:	new 39;		// vault/VaultApplet
+					dup;
+					invokespecial 40;		// vault/VaultApplet.<init>()V
+					aload_0;
+					sload_1;
+					sconst_1;
+					sadd;
+					aload_0;
+					sload_1;
+					baload;
+					invokevirtual 41;		// register([BSB)V
+					return;
+		}
+
+		.method public process(Ljavacard/framework/APDU;)V 7 {
+			.stack 5;
+			.locals 2;
+
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+				L0:	aload_0;
+					invokevirtual 42;		// selectingApplet()Z
+					ifeq L2;
+				L1:	return;
+				L2:	aload_1;
+					invokevirtual 43;		// getBuffer()[B
+					astore_2;
+				L3:	aload_2;
+					sconst_0;
+					baload;
+					bspush -128;
+					if_scmpeq L5;
+				L4:	sspush 28160;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L5:	aload_2;
+					sconst_1;
+					baload;
+					sstore_3;
+				L6:	sload_3;
+					bspush 113;
+					if_scmpeq L8;
+				L7:	getfield_a_this 16;		// reference vault/VaultApplet.session
+					sconst_0;
+					dup2;
+					baload;
+					bspush -9;
+					sand;
+					bastore;
+				L8:	sload_3;
+					slookupswitch L40 31 1 L9 16 L10 17 L11 18 L12 32 L13 33 L14 34 L15 35 L16 48 L17 49 L18 64 L19 65 L20 66 L21 67 L22 80 L23 81 L24 82 L25 83 L26 84 L27 85 L28 86 L29 87 L30 88 L31 96 L32 97 L33 98 L34 99 L35 112 L36 113 L37 114 L38 115 L39;
+				L9:	getstatic_a 45;		// reference vault/VaultApplet.VERSION
+					sconst_0;
+					aload_2;
+					sconst_0;
+					getstatic_a 45;		// reference vault/VaultApplet.VERSION
+					arraylength;
+					invokestatic 46;		// javacard/framework/Util.arrayCopyNonAtomic([BS[BSS)S
+					pop;
+					aload_1;
+					sconst_0;
+					getstatic_a 45;		// reference vault/VaultApplet.VERSION
+					arraylength;
+					invokevirtual 47;		// setOutgoingAndSend(SS)V
+					return;
+				L10:	aload_0;
+					aload_1;
+					invokespecial 48;		// vault/VaultApplet.issue(Ljavacard/framework/APDU;)V
+					return;
+				L11:	aload_0;
+					aload_1;
+					invokespecial 49;		// vault/VaultApplet.getStatus(Ljavacard/framework/APDU;)V
+					return;
+				L12:	aload_0;
+					aload_1;
+					invokespecial 50;		// vault/VaultApplet.getPubKey(Ljavacard/framework/APDU;)V
+					return;
+				L13:	aload_0;
+					aload_1;
+					invokespecial 51;		// vault/VaultApplet.verifyPin(Ljavacard/framework/APDU;)V
+					return;
+				L14:	aload_0;
+					aload_1;
+					invokespecial 52;		// vault/VaultApplet.changePin(Ljavacard/framework/APDU;)V
+					return;
+				L15:	aload_0;
+					aload_1;
+					invokespecial 53;		// vault/VaultApplet.unblockPuk(Ljavacard/framework/APDU;)V
+					return;
+				L16:	aload_0;
+					invokespecial 54;		// vault/VaultApplet.clearSession()V
+					return;
+				L17:	aload_0;
+					aload_1;
+					invokespecial 55;		// vault/VaultApplet.internalAuth(Ljavacard/framework/APDU;)V
+					return;
+				L18:	aload_0;
+					aload_1;
+					invokespecial 56;		// vault/VaultApplet.getSignature(Ljavacard/framework/APDU;)V
+					return;
+				L19:	aload_0;
+					aload_1;
+					invokespecial 57;		// vault/VaultApplet.setProfile(Ljavacard/framework/APDU;)V
+					return;
+				L20:	aload_0;
+					aload_1;
+					invokespecial 58;		// vault/VaultApplet.getProfile(Ljavacard/framework/APDU;)V
+					return;
+				L21:	aload_0;
+					aload_1;
+					invokespecial 59;		// vault/VaultApplet.setAvatar(Ljavacard/framework/APDU;)V
+					return;
+				L22:	aload_0;
+					aload_1;
+					invokespecial 60;		// vault/VaultApplet.getAvatar(Ljavacard/framework/APDU;)V
+					return;
+				L23:	aload_0;
+					aload_1;
+					invokespecial 61;		// vault/VaultApplet.listSlots(Ljavacard/framework/APDU;)V
+					return;
+				L24:	aload_0;
+					aload_1;
+					invokespecial 62;		// vault/VaultApplet.addEntry(Ljavacard/framework/APDU;)V
+					return;
+				L25:	aload_0;
+					aload_1;
+					invokespecial 63;		// vault/VaultApplet.updateMeta(Ljavacard/framework/APDU;)V
+					return;
+				L26:	aload_0;
+					aload_1;
+					invokespecial 64;		// vault/VaultApplet.setPassword(Ljavacard/framework/APDU;)V
+					return;
+				L27:	aload_0;
+					aload_1;
+					sconst_1;
+					sconst_2;
+					invokespecial 65;		// vault/VaultApplet.getSlotBlob(Ljavacard/framework/APDU;SS)V
+					return;
+				L28:	aload_0;
+					aload_1;
+					sspush 226;
+					sspush 227;
+					invokespecial 65;		// vault/VaultApplet.getSlotBlob(Ljavacard/framework/APDU;SS)V
+					return;
+				L29:	aload_0;
+					aload_1;
+					invokespecial 66;		// vault/VaultApplet.deleteEntry(Ljavacard/framework/APDU;)V
+					return;
+				L30:	aload_0;
+					aload_1;
+					invokespecial 67;		// vault/VaultApplet.search(Ljavacard/framework/APDU;)V
+					return;
+				L31:	aload_0;
+					aload_1;
+					invokespecial 68;		// vault/VaultApplet.genPassword(Ljavacard/framework/APDU;)V
+					return;
+				L32:	aload_0;
+					aload_1;
+					invokespecial 69;		// vault/VaultApplet.backupBegin(Ljavacard/framework/APDU;)V
+					return;
+				L33:	aload_0;
+					aload_1;
+					invokespecial 70;		// vault/VaultApplet.backupRead(Ljavacard/framework/APDU;)V
+					return;
+				L34:	aload_0;
+					aload_1;
+					invokespecial 71;		// vault/VaultApplet.restoreBegin(Ljavacard/framework/APDU;)V
+					return;
+				L35:	aload_0;
+					aload_1;
+					invokespecial 72;		// vault/VaultApplet.restoreWrite(Ljavacard/framework/APDU;)V
+					return;
+				L36:	aload_0;
+					aload_1;
+					invokespecial 73;		// vault/VaultApplet.adminChallenge(Ljavacard/framework/APDU;)V
+					return;
+				L37:	aload_0;
+					aload_1;
+					invokespecial 74;		// vault/VaultApplet.adminAuth(Ljavacard/framework/APDU;)V
+					return;
+				L38:	aload_0;
+					aload_1;
+					invokespecial 75;		// vault/VaultApplet.adminLock(Ljavacard/framework/APDU;)V
+					return;
+				L39:	aload_0;
+					invokespecial 76;		// vault/VaultApplet.revoke()V
+					return;
+				L40:	sspush 27904;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+					return;
+		}
+
+		.method private issue(Ljavacard/framework/APDU;)V {
+			.stack 8;
+			.locals 10;
+
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+				L0:	getfield_b_this 13;		// byte vault/VaultApplet.cardState
+					ifeq L2;
+				L1:	sspush 27013;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L2:	aload_1;
+					invokevirtual 43;		// getBuffer()[B
+					astore_2;
+				L3:	aload_1;
+					invokestatic 77;		// vault/VaultApplet.receive(Ljavacard/framework/APDU;)S
+					sstore_3;
+				L4:	sconst_5;
+					sstore 4;
+				L5:	sload 4;
+					sload_3;
+					sadd;
+					sstore 5;
+				L6:	sload 4;
+					sstore 6;
+				L7:	sinc 4 8;
+					sload 4;
+					sload 5;
+					if_scmplt L9;
+				L8:	sspush 26368;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L9:	aload_2;
+					sload 4;
+					dup;
+					sconst_1;
+					sadd;
+					sstore 4;
+					baload;
+					sspush 255;
+					sand;
+					sstore 7;
+				L10:	sload 4;
+					sstore 8;
+				L11:	sload 4;
+					sload 7;
+					sadd;
+					sstore 4;
+					sload 4;
+					sload 5;
+					if_scmplt L13;
+				L12:	sspush 26368;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L13:	aload_2;
+					sload 4;
+					dup;
+					sconst_1;
+					sadd;
+					sstore 4;
+					baload;
+					sspush 255;
+					sand;
+					sstore 9;
+				L14:	sload 4;
+					sstore 10;
+				L15:	sload 4;
+					sload 9;
+					sadd;
+					sstore 4;
+					sload 4;
+					sstore 11;
+				L16:	sinc 4 16;
+					sload 4;
+					sload 5;
+					if_scmpeq L18;
+				L17:	sspush 26368;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L18:	aload_2;
+					sload 6;
+					invokestatic 78;		// vault/VaultApplet.checkCardId([BS)V
+					aload_2;
+					sload 8;
+					sload 7;
+					invokestatic 79;		// vault/VaultApplet.checkPinFormat([BSS)V
+					aload_2;
+					sload 10;
+					sload 9;
+					invokestatic 80;		// vault/VaultApplet.checkPukFormat([BSS)V
+					getfield_a_this 15;		// reference vault/VaultApplet.rsaKeyPair
+					invokevirtual 81;		// genKeyPair()V
+					getfield_a_this 14;		// reference vault/VaultApplet.adminKey
+					aload_2;
+					sload 11;
+					invokeinterface 3 113 4;		// javacard/security/AESKey
+					getfield_a_this 24;		// reference vault/VaultApplet.rng
+					getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sconst_0;
+					bspush 16;
+					invokevirtual 82;		// nextBytes([BSS)S
+					pop;
+					aload_0;
+					aload_2;
+					sload 8;
+					sload 7;
+					bspush 16;
+					bspush 32;
+					bspush 48;
+					bspush 80;
+					invokespecial 83;		// vault/VaultApplet.deriveCredential([BSSSSSS)V
+					aload_0;
+					aload_2;
+					sload 10;
+					sload 9;
+					bspush 96;
+					bspush 112;
+					sspush 128;
+					sspush 160;
+					invokespecial 83;		// vault/VaultApplet.deriveCredential([BSSSSSS)V
+					invokestatic 84;		// javacard/framework/JCSystem.beginTransaction()V
+					aload_2;
+					sload 6;
+					getfield_a_this 0;		// reference vault/VaultApplet.cardId
+					sconst_0;
+					bspush 8;
+					invokestatic 85;		// javacard/framework/Util.arrayCopy([BS[BSS)S
+					pop;
+					aload_0;
+					invokespecial 86;		// vault/VaultApplet.storePinCredential()V
+					getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					bspush 96;
+					getfield_a_this 4;		// reference vault/VaultApplet.pukSalt
+					sconst_0;
+					bspush 16;
+					invokestatic 85;		// javacard/framework/Util.arrayCopy([BS[BSS)S
+					pop;
+					getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					bspush 112;
+					getfield_a_this 6;		// reference vault/VaultApplet.pukKekSalt
+					sconst_0;
+					bspush 16;
+					invokestatic 85;		// javacard/framework/Util.arrayCopy([BS[BSS)S
+					pop;
+					getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sspush 128;
+					getfield_a_this 5;		// reference vault/VaultApplet.pukHash
+					sconst_0;
+					bspush 32;
+					invokestatic 85;		// javacard/framework/Util.arrayCopy([BS[BSS)S
+					pop;
+					getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sspush 160;
+					getfield_a_this 8;		// reference vault/VaultApplet.mkByPuk
+					sconst_0;
+					bspush 16;
+					invokestatic 85;		// javacard/framework/Util.arrayCopy([BS[BSS)S
+					pop;
+					sconst_3;
+					putfield_b_this 28;		// byte vault/VaultApplet.pinTriesLeft
+					sconst_5;
+					putfield_b_this 29;		// byte vault/VaultApplet.pukTriesLeft
+					sconst_1;
+					putfield_b_this 13;		// byte vault/VaultApplet.cardState
+					invokestatic 89;		// javacard/framework/JCSystem.commitTransaction()V
+					aload_0;
+					invokespecial 90;		// vault/VaultApplet.clearScratch()V
+					return;
+		}
+
+		.method private getStatus(Ljavacard/framework/APDU;)V {
+			.stack 5;
+			.locals 1;
+
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+				L0:	aload_1;
+					invokevirtual 43;		// getBuffer()[B
+					astore_2;
+				L1:	aload_2;
+					sconst_0;
+					getfield_b_this 13;		// byte vault/VaultApplet.cardState
+					bastore;
+					getfield_a_this 0;		// reference vault/VaultApplet.cardId
+					sconst_0;
+					aload_2;
+					sconst_1;
+					bspush 8;
+					invokestatic 46;		// javacard/framework/Util.arrayCopyNonAtomic([BS[BSS)S
+					pop;
+					aload_2;
+					bspush 9;
+					getfield_b_this 28;		// byte vault/VaultApplet.pinTriesLeft
+					bastore;
+					aload_2;
+					bspush 10;
+					getfield_b_this 29;		// byte vault/VaultApplet.pukTriesLeft
+					bastore;
+					aload_1;
+					sconst_0;
+					bspush 11;
+					invokevirtual 47;		// setOutgoingAndSend(SS)V
+					return;
+		}
+
+		.method private getPubKey(Ljavacard/framework/APDU;)V {
+			.stack 5;
+			.locals 4;
+
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+				L0:	getfield_b_this 13;		// byte vault/VaultApplet.cardState
+					ifne L2;
+				L1:	sspush 27013;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L2:	aload_1;
+					invokevirtual 43;		// getBuffer()[B
+					astore_2;
+				L3:	getfield_a_this 15;		// reference vault/VaultApplet.rsaKeyPair
+					invokevirtual 91;		// getPublic()Ljavacard/security/PublicKey;
+					checkcast 0 92;		// T_CLASSORINTERFACE javacard/security/RSAPublicKey
+					astore_3;
+				L4:	aload_2;
+					sconst_2;
+					baload;
+					sstore 4;
+				L5:	sload 4;
+					ifeq L7;
+				L6:	sload 4;
+					sconst_1;
+					if_scmpne L12;
+				L7:	aload_3;
+					getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sconst_0;
+					invokeinterface 3 92 5;		// javacard/security/RSAPublicKey
+					pop;
+					getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sload 4;
+					ifne L9;
+				L8:	sconst_0;
+					goto L10;
+				L9:	sspush 128;
+				L10:	aload_2;
+					sconst_0;
+					sspush 128;
+					invokestatic 46;		// javacard/framework/Util.arrayCopyNonAtomic([BS[BSS)S
+					pop;
+					sspush 128;
+					sstore 5;
+				L11:	goto L16;
+				L12:	sload 4;
+					sconst_2;
+					if_scmpne L15;
+				L13:	aload_3;
+					aload_2;
+					sconst_0;
+					invokeinterface 3 92 4;		// javacard/security/RSAPublicKey
+					sstore 5;
+				L14:	goto L16;
+				L15:	sspush 27270;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+					return;
+				L16:	aload_1;
+					sconst_0;
+					sload 5;
+					invokevirtual 47;		// setOutgoingAndSend(SS)V
+					return;
+		}
+
+		.method private verifyPin(Ljavacard/framework/APDU;)V {
+			.stack 6;
+			.locals 2;
+
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+				L0:	aload_0;
+					invokespecial 93;		// vault/VaultApplet.requirePinUsable()V
+					aload_1;
+					invokevirtual 43;		// getBuffer()[B
+					astore_2;
+				L1:	aload_1;
+					invokestatic 77;		// vault/VaultApplet.receive(Ljavacard/framework/APDU;)S
+					sstore_3;
+				L2:	aload_2;
+					sconst_5;
+					sload_3;
+					invokestatic 79;		// vault/VaultApplet.checkPinFormat([BSS)V
+					getfield_a_this 16;		// reference vault/VaultApplet.session
+					sconst_0;
+					dup2;
+					baload;
+					bspush -2;
+					sand;
+					bastore;
+					getfield_a_this 21;		// reference vault/VaultApplet.sessionMk
+					invokeinterface 1 113 0;		// javacard/security/AESKey
+					aload_0;
+					aload_2;
+					sconst_5;
+					sload_3;
+					invokespecial 94;		// vault/VaultApplet.checkPinOrThrow([BSS)V
+					aload_0;
+					aload_2;
+					sconst_5;
+					sload_3;
+					getfield_a_this 3;		// reference vault/VaultApplet.pinKekSalt
+					getfield_a_this 7;		// reference vault/VaultApplet.mkByPin
+					invokespecial 95;		// vault/VaultApplet.unwrapMk([BSS[B[B)V
+					getfield_a_this 21;		// reference vault/VaultApplet.sessionMk
+					getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sconst_0;
+					invokeinterface 3 113 4;		// javacard/security/AESKey
+					getfield_a_this 16;		// reference vault/VaultApplet.session
+					sconst_0;
+					dup2;
+					baload;
+					sconst_1;
+					sor;
+					bastore;
+					aload_0;
+					invokespecial 90;		// vault/VaultApplet.clearScratch()V
+					return;
+		}
+
+		.method private changePin(Ljavacard/framework/APDU;)V {
+			.stack 8;
+			.locals 8;
+
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+				L0:	aload_0;
+					invokespecial 93;		// vault/VaultApplet.requirePinUsable()V
+					aload_1;
+					invokevirtual 43;		// getBuffer()[B
+					astore_2;
+				L1:	aload_1;
+					invokestatic 77;		// vault/VaultApplet.receive(Ljavacard/framework/APDU;)S
+					sstore_3;
+				L2:	sconst_5;
+					sload_3;
+					sadd;
+					sstore 4;
+				L3:	sconst_5;
+					sstore 5;
+				L4:	aload_2;
+					sload 5;
+					dup;
+					sconst_1;
+					sadd;
+					sstore 5;
+					baload;
+					sspush 255;
+					sand;
+					sstore 6;
+				L5:	sload 5;
+					sstore 7;
+				L6:	sload 5;
+					sload 6;
+					sadd;
+					sstore 5;
+					sload 5;
+					sload 4;
+					if_scmplt L8;
+				L7:	sspush 26368;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L8:	aload_2;
+					sload 5;
+					dup;
+					sconst_1;
+					sadd;
+					sstore 5;
+					baload;
+					sspush 255;
+					sand;
+					sstore 8;
+				L9:	sload 5;
+					sstore 9;
+				L10:	sload 5;
+					sload 8;
+					sadd;
+					sload 4;
+					if_scmpeq L12;
+				L11:	sspush 26368;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L12:	aload_2;
+					sload 7;
+					sload 6;
+					invokestatic 79;		// vault/VaultApplet.checkPinFormat([BSS)V
+					aload_2;
+					sload 9;
+					sload 8;
+					invokestatic 79;		// vault/VaultApplet.checkPinFormat([BSS)V
+					aload_0;
+					aload_2;
+					sload 7;
+					sload 6;
+					invokespecial 94;		// vault/VaultApplet.checkPinOrThrow([BSS)V
+					aload_0;
+					aload_2;
+					sload 7;
+					sload 6;
+					getfield_a_this 3;		// reference vault/VaultApplet.pinKekSalt
+					getfield_a_this 7;		// reference vault/VaultApplet.mkByPin
+					invokespecial 95;		// vault/VaultApplet.unwrapMk([BSS[B[B)V
+					aload_0;
+					aload_2;
+					sload 9;
+					sload 8;
+					bspush 16;
+					bspush 32;
+					bspush 48;
+					bspush 80;
+					invokespecial 83;		// vault/VaultApplet.deriveCredential([BSSSSSS)V
+					invokestatic 84;		// javacard/framework/JCSystem.beginTransaction()V
+					aload_0;
+					invokespecial 86;		// vault/VaultApplet.storePinCredential()V
+					invokestatic 89;		// javacard/framework/JCSystem.commitTransaction()V
+					getfield_a_this 21;		// reference vault/VaultApplet.sessionMk
+					getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sconst_0;
+					invokeinterface 3 113 4;		// javacard/security/AESKey
+					getfield_a_this 16;		// reference vault/VaultApplet.session
+					sconst_0;
+					dup2;
+					baload;
+					sconst_1;
+					sor;
+					bastore;
+					aload_0;
+					invokespecial 90;		// vault/VaultApplet.clearScratch()V
+					return;
+		}
+
+		.method private unblockPuk(Ljavacard/framework/APDU;)V {
+			.stack 8;
+			.locals 8;
+
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+				L0:	getfield_b_this 13;		// byte vault/VaultApplet.cardState
+					sconst_1;
+					if_scmpeq L3;
+				L1:	getfield_b_this 13;		// byte vault/VaultApplet.cardState
+					sconst_2;
+					if_scmpeq L3;
+				L2:	sspush 27013;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L3:	aload_1;
+					invokevirtual 43;		// getBuffer()[B
+					astore_2;
+				L4:	aload_1;
+					invokestatic 77;		// vault/VaultApplet.receive(Ljavacard/framework/APDU;)S
+					sstore_3;
+				L5:	sconst_5;
+					sload_3;
+					sadd;
+					sstore 4;
+				L6:	sconst_5;
+					sstore 5;
+				L7:	aload_2;
+					sload 5;
+					dup;
+					sconst_1;
+					sadd;
+					sstore 5;
+					baload;
+					sspush 255;
+					sand;
+					sstore 6;
+				L8:	sload 5;
+					sstore 7;
+				L9:	sload 5;
+					sload 6;
+					sadd;
+					sstore 5;
+					sload 5;
+					sload 4;
+					if_scmplt L11;
+				L10:	sspush 26368;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L11:	aload_2;
+					sload 5;
+					dup;
+					sconst_1;
+					sadd;
+					sstore 5;
+					baload;
+					sspush 255;
+					sand;
+					sstore 8;
+				L12:	sload 5;
+					sstore 9;
+				L13:	sload 5;
+					sload 8;
+					sadd;
+					sload 4;
+					if_scmpeq L15;
+				L14:	sspush 26368;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L15:	aload_2;
+					sload 7;
+					sload 6;
+					invokestatic 80;		// vault/VaultApplet.checkPukFormat([BSS)V
+					aload_2;
+					sload 9;
+					sload 8;
+					invokestatic 79;		// vault/VaultApplet.checkPinFormat([BSS)V
+					aload_0;
+					invokespecial 54;		// vault/VaultApplet.clearSession()V
+					getfield_b_this 29;		// byte vault/VaultApplet.pukTriesLeft
+					ifne L17;
+				L16:	aload_0;
+					sconst_5;
+					invokespecial 96;		// vault/VaultApplet.wipeKeysAndSetState(B)V
+					sspush 27011;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L17:	aload_0;
+					dup;
+					getfield_b 29;		// byte vault/VaultApplet.pukTriesLeft
+					sconst_1;
+					ssub;
+					s2b;
+					putfield_b 29;		// byte vault/VaultApplet.pukTriesLeft
+					aload_0;
+					getfield_a_this 4;		// reference vault/VaultApplet.pukSalt
+					aload_2;
+					sload 7;
+					sload 6;
+					getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sspush 176;
+					invokespecial 97;		// vault/VaultApplet.hashWithSalt([B[BSS[BS)V
+					getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sspush 176;
+					getfield_a_this 5;		// reference vault/VaultApplet.pukHash
+					sconst_0;
+					bspush 32;
+					invokestatic 98;		// javacard/framework/Util.arrayCompare([BS[BSS)B
+					ifeq L21;
+				L18:	aload_0;
+					invokespecial 90;		// vault/VaultApplet.clearScratch()V
+					getfield_b_this 29;		// byte vault/VaultApplet.pukTriesLeft
+					ifne L20;
+				L19:	aload_0;
+					sconst_5;
+					invokespecial 96;		// vault/VaultApplet.wipeKeysAndSetState(B)V
+					sspush 27011;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L20:	sspush 25536;
+					getfield_b_this 29;		// byte vault/VaultApplet.pukTriesLeft
+					sor;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L21:	aload_0;
+					aload_2;
+					sload 7;
+					sload 6;
+					getfield_a_this 6;		// reference vault/VaultApplet.pukKekSalt
+					getfield_a_this 8;		// reference vault/VaultApplet.mkByPuk
+					invokespecial 95;		// vault/VaultApplet.unwrapMk([BSS[B[B)V
+					aload_0;
+					aload_2;
+					sload 9;
+					sload 8;
+					bspush 16;
+					bspush 32;
+					bspush 48;
+					bspush 80;
+					invokespecial 83;		// vault/VaultApplet.deriveCredential([BSSSSSS)V
+					invokestatic 84;		// javacard/framework/JCSystem.beginTransaction()V
+					aload_0;
+					invokespecial 86;		// vault/VaultApplet.storePinCredential()V
+					sconst_3;
+					putfield_b_this 28;		// byte vault/VaultApplet.pinTriesLeft
+					sconst_5;
+					putfield_b_this 29;		// byte vault/VaultApplet.pukTriesLeft
+					sconst_1;
+					putfield_b_this 13;		// byte vault/VaultApplet.cardState
+					invokestatic 89;		// javacard/framework/JCSystem.commitTransaction()V
+					aload_0;
+					invokespecial 90;		// vault/VaultApplet.clearScratch()V
+					return;
+		}
+
+		.method private internalAuth(Ljavacard/framework/APDU;)V {
+			.stack 6;
+			.locals 3;
+
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+				L0:	aload_0;
+					invokespecial 99;		// vault/VaultApplet.requireIssuedAlive()V
+					aload_1;
+					invokevirtual 43;		// getBuffer()[B
+					astore_2;
+				L1:	aload_1;
+					invokestatic 77;		// vault/VaultApplet.receive(Ljavacard/framework/APDU;)S
+					sstore_3;
+				L2:	sload_3;
+					bspush 32;
+					if_scmpeq L4;
+				L3:	sspush 26368;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L4:	getfield_a_this 16;		// reference vault/VaultApplet.session
+					sconst_0;
+					dup2;
+					baload;
+					bspush -5;
+					sand;
+					bastore;
+					getstatic_a 100;		// reference vault/VaultApplet.AUTH_PREFIX
+					sconst_0;
+					getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sconst_0;
+					getstatic_a 100;		// reference vault/VaultApplet.AUTH_PREFIX
+					arraylength;
+					invokestatic 46;		// javacard/framework/Util.arrayCopyNonAtomic([BS[BSS)S
+					sstore 4;
+				L5:	getfield_a_this 0;		// reference vault/VaultApplet.cardId
+					sconst_0;
+					getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sload 4;
+					bspush 8;
+					invokestatic 46;		// javacard/framework/Util.arrayCopyNonAtomic([BS[BSS)S
+					sstore 4;
+					aload_2;
+					sconst_5;
+					getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sload 4;
+					bspush 32;
+					invokestatic 46;		// javacard/framework/Util.arrayCopyNonAtomic([BS[BSS)S
+					sstore 4;
+					getfield_a_this 27;		// reference vault/VaultApplet.rsaSigner
+					getfield_a_this 15;		// reference vault/VaultApplet.rsaKeyPair
+					invokevirtual 101;		// getPrivate()Ljavacard/security/PrivateKey;
+					sconst_1;
+					invokevirtual 102;		// init(Ljavacard/security/Key;B)V
+					getfield_a_this 27;		// reference vault/VaultApplet.rsaSigner
+					getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sconst_0;
+					sload 4;
+					getfield_a_this 17;		// reference vault/VaultApplet.sigBuf
+					sconst_0;
+					invokevirtual 103;		// sign([BSS[BS)S
+					pop;
+					getfield_a_this 16;		// reference vault/VaultApplet.session
+					sconst_0;
+					dup2;
+					baload;
+					sconst_4;
+					sor;
+					bastore;
+					aload_0;
+					invokespecial 90;		// vault/VaultApplet.clearScratch()V
+					return;
+		}
+
+		.method private getSignature(Ljavacard/framework/APDU;)V {
+			.stack 5;
+			.locals 2;
+
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+				L0:	getfield_a_this 16;		// reference vault/VaultApplet.session
+					sconst_0;
+					baload;
+					sconst_4;
+					sand;
+					ifne L2;
+				L1:	sspush 27013;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L2:	aload_1;
+					invokevirtual 43;		// getBuffer()[B
+					astore_2;
+				L3:	aload_2;
+					sconst_2;
+					baload;
+					sstore_3;
+				L4:	sload_3;
+					ifeq L7;
+				L5:	sload_3;
+					sconst_1;
+					if_scmpeq L7;
+				L6:	sspush 27270;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L7:	getfield_a_this 17;		// reference vault/VaultApplet.sigBuf
+					sload_3;
+					ifne L9;
+				L8:	sconst_0;
+					goto L10;
+				L9:	sspush 128;
+				L10:	aload_2;
+					sconst_0;
+					sspush 128;
+					invokestatic 46;		// javacard/framework/Util.arrayCopyNonAtomic([BS[BSS)S
+					pop;
+					aload_1;
+					sconst_0;
+					sspush 128;
+					invokevirtual 47;		// setOutgoingAndSend(SS)V
+					return;
+		}
+
+		.method private setProfile(Ljavacard/framework/APDU;)V {
+			.stack 6;
+			.locals 3;
+
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+				L0:	aload_0;
+					invokespecial 104;		// vault/VaultApplet.requirePin()V
+					aload_1;
+					invokevirtual 43;		// getBuffer()[B
+					astore_2;
+				L1:	aload_1;
+					invokestatic 77;		// vault/VaultApplet.receive(Ljavacard/framework/APDU;)S
+					sstore_3;
+				L2:	sload_3;
+					ifne L4;
+				L3:	sspush 26368;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L4:	aload_2;
+					sconst_5;
+					sload_3;
+					sconst_1;
+					getstatic_a 105;		// reference vault/VaultApplet.PROFILE_MIN
+					getstatic_a 106;		// reference vault/VaultApplet.PROFILE_MAX
+					invokestatic 107;		// vault/VaultApplet.checkTlv([BSSB[B[B)S
+					pop;
+					aload_0;
+					aload_2;
+					sconst_5;
+					sload_3;
+					invokespecial 108;		// vault/VaultApplet.encryptToWork([BSS)S
+					sstore 4;
+				L5:	invokestatic 84;		// javacard/framework/JCSystem.beginTransaction()V
+					getfield_a_this 19;		// reference vault/VaultApplet.work
+					sconst_0;
+					getfield_a_this 9;		// reference vault/VaultApplet.profileBlob
+					sconst_0;
+					sload 4;
+					invokestatic 85;		// javacard/framework/Util.arrayCopy([BS[BSS)S
+					pop;
+					aload_0;
+					sload 4;
+					s2b;
+					putfield_b 30;		// byte vault/VaultApplet.profileLen
+					invokestatic 89;		// javacard/framework/JCSystem.commitTransaction()V
+					return;
+		}
+
+		.method private getProfile(Ljavacard/framework/APDU;)V {
+			.stack 5;
+			.locals 1;
+
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+				L0:	aload_0;
+					invokespecial 104;		// vault/VaultApplet.requirePin()V
+					getfield_b_this 30;		// byte vault/VaultApplet.profileLen
+					ifne L2;
+				L1:	sspush 27272;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L2:	aload_0;
+					getfield_a_this 9;		// reference vault/VaultApplet.profileBlob
+					sconst_0;
+					getfield_b_this 30;		// byte vault/VaultApplet.profileLen
+					sspush 255;
+					sand;
+					invokespecial 110;		// vault/VaultApplet.decryptToScratch([BSS)S
+					sstore_2;
+				L3:	aload_0;
+					aload_1;
+					sload_2;
+					invokespecial 111;		// vault/VaultApplet.sendScratch(Ljavacard/framework/APDU;S)V
+					return;
+		}
+
+		.method private setAvatar(Ljavacard/framework/APDU;)V {
+			.stack 5;
+			.locals 5;
+
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+				L0:	aload_0;
+					invokespecial 104;		// vault/VaultApplet.requirePin()V
+					aload_1;
+					invokevirtual 43;		// getBuffer()[B
+					astore_2;
+				L1:	aload_2;
+					sconst_2;
+					baload;
+					sspush 255;
+					sand;
+					sstore_3;
+				L2:	aload_2;
+					sconst_3;
+					baload;
+					sspush 255;
+					sand;
+					sstore 4;
+				L3:	sload 4;
+					ifeq L6;
+				L4:	sload 4;
+					bspush 16;
+					if_scmpgt L6;
+				L5:	sload_3;
+					sload 4;
+					if_scmplt L7;
+				L6:	sspush 27270;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L7:	aload_1;
+					invokestatic 77;		// vault/VaultApplet.receive(Ljavacard/framework/APDU;)S
+					sstore 5;
+				L8:	sload 5;
+					ifeq L10;
+				L9:	sload 5;
+					sspush 192;
+					if_scmple L11;
+				L10:	sspush 26368;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L11:	sload_3;
+					ifne L13;
+				L12:	sconst_0;
+					putfield_b_this 31;		// byte vault/VaultApplet.avatarChunks
+					aload_0;
+					sload 4;
+					s2b;
+					putfield_b 32;		// byte vault/VaultApplet.avatarTotal
+					goto L16;
+				L13:	sload_3;
+					getfield_b_this 31;		// byte vault/VaultApplet.avatarChunks
+					if_scmpne L15;
+				L14:	sload 4;
+					getfield_b_this 32;		// byte vault/VaultApplet.avatarTotal
+					if_scmpeq L16;
+				L15:	sspush 27013;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L16:	aload_0;
+					aload_2;
+					sconst_5;
+					sload 5;
+					invokespecial 108;		// vault/VaultApplet.encryptToWork([BSS)S
+					sstore 6;
+				L17:	invokestatic 84;		// javacard/framework/JCSystem.beginTransaction()V
+					getfield_a_this 19;		// reference vault/VaultApplet.work
+					sconst_0;
+					getfield_a_this 10;		// reference vault/VaultApplet.avatarBlob
+					sload_3;
+					sspush 224;
+					smul;
+					sload 6;
+					invokestatic 85;		// javacard/framework/Util.arrayCopy([BS[BSS)S
+					pop;
+					getfield_a_this 11;		// reference vault/VaultApplet.avatarLens
+					sload_3;
+					sload 6;
+					s2b;
+					bastore;
+					aload_0;
+					sload_3;
+					sconst_1;
+					sadd;
+					s2b;
+					putfield_b 31;		// byte vault/VaultApplet.avatarChunks
+					invokestatic 89;		// javacard/framework/JCSystem.commitTransaction()V
+					return;
+		}
+
+		.method private getAvatar(Ljavacard/framework/APDU;)V {
+			.stack 5;
+			.locals 4;
+
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+				L0:	aload_0;
+					invokespecial 104;		// vault/VaultApplet.requirePin()V
+					aload_1;
+					invokevirtual 43;		// getBuffer()[B
+					astore_2;
+				L1:	aload_2;
+					sconst_2;
+					baload;
+					sspush 255;
+					sand;
+					sstore_3;
+				L2:	getfield_b_this 31;		// byte vault/VaultApplet.avatarChunks
+					ifeq L5;
+				L3:	getfield_b_this 31;		// byte vault/VaultApplet.avatarChunks
+					getfield_b_this 32;		// byte vault/VaultApplet.avatarTotal
+					if_scmpne L5;
+				L4:	sconst_1;
+					goto L6;
+				L5:	sconst_0;
+				L6:	sstore 4;
+				L7:	sload_3;
+					sspush 255;
+					if_scmpne L12;
+				L8:	aload_2;
+					sconst_0;
+					sload 4;
+					ifeq L10;
+				L9:	getfield_b_this 31;		// byte vault/VaultApplet.avatarChunks
+					goto L11;
+				L10:	sconst_0;
+				L11:	bastore;
+					aload_1;
+					sconst_0;
+					sconst_1;
+					invokevirtual 47;		// setOutgoingAndSend(SS)V
+					return;
+				L12:	sload_3;
+					bspush 16;
+					if_scmplt L14;
+				L13:	sspush 27270;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L14:	sload 4;
+					ifeq L16;
+				L15:	sload_3;
+					getfield_b_this 31;		// byte vault/VaultApplet.avatarChunks
+					if_scmplt L17;
+				L16:	sspush 27272;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L17:	aload_0;
+					getfield_a_this 10;		// reference vault/VaultApplet.avatarBlob
+					sload_3;
+					sspush 224;
+					smul;
+					getfield_a_this 11;		// reference vault/VaultApplet.avatarLens
+					sload_3;
+					baload;
+					sspush 255;
+					sand;
+					invokespecial 110;		// vault/VaultApplet.decryptToScratch([BSS)S
+					sstore 5;
+				L18:	aload_0;
+					aload_1;
+					sload 5;
+					invokespecial 111;		// vault/VaultApplet.sendScratch(Ljavacard/framework/APDU;S)V
+					return;
+		}
+
+		.method private listSlots(Ljavacard/framework/APDU;)V {
+			.stack 4;
+			.locals 2;
+
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+				L0:	aload_0;
+					invokespecial 104;		// vault/VaultApplet.requirePin()V
+					aload_1;
+					invokevirtual 43;		// getBuffer()[B
+					astore_2;
+				L1:	aload_2;
+					sconst_0;
+					sconst_4;
+					sconst_0;
+					invokestatic 114;		// javacard/framework/Util.arrayFillNonAtomic([BSSB)S
+					pop;
+					sconst_0;
+					sstore_3;
+				L2:	goto L6;
+				L3:	getfield_a_this 12;		// reference vault/VaultApplet.vault
+					sload_3;
+					sspush 323;
+					smul;
+					sconst_0;
+					sadd;
+					baload;
+					sconst_1;
+					if_scmpne L5;
+				L4:	aload_2;
+					sload_3;
+					invokestatic 115;		// vault/VaultApplet.setBit([BS)V
+				L5:	sinc 3 1;
+				L6:	sload_3;
+					bspush 32;
+					if_scmplt L3;
+				L7:	aload_1;
+					sconst_0;
+					sconst_4;
+					invokevirtual 47;		// setOutgoingAndSend(SS)V
+					return;
+		}
+
+		.method private addEntry(Ljavacard/framework/APDU;)V {
+			.stack 5;
+			.locals 5;
+
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+				L0:	aload_0;
+					invokespecial 104;		// vault/VaultApplet.requirePin()V
+					aload_1;
+					invokevirtual 43;		// getBuffer()[B
+					astore_2;
+				L1:	aload_1;
+					invokestatic 77;		// vault/VaultApplet.receive(Ljavacard/framework/APDU;)S
+					sstore_3;
+				L2:	aload_2;
+					sconst_5;
+					sload_3;
+					invokestatic 116;		// vault/VaultApplet.checkMeta([BSS)V
+					sconst_0;
+					sstore 4;
+				L3:	goto L5;
+				L4:	sinc 4 1;
+				L5:	sload 4;
+					bspush 32;
+					if_scmpge L7;
+				L6:	getfield_a_this 12;		// reference vault/VaultApplet.vault
+					sload 4;
+					sspush 323;
+					smul;
+					sconst_0;
+					sadd;
+					baload;
+					sconst_1;
+					if_scmpeq L4;
+				L7:	sload 4;
+					bspush 32;
+					if_scmpne L9;
+				L8:	sspush 27268;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L9:	sload 4;
+					sspush 323;
+					smul;
+					sstore 5;
+				L10:	aload_0;
+					aload_2;
+					sconst_5;
+					sload_3;
+					invokespecial 108;		// vault/VaultApplet.encryptToWork([BSS)S
+					sstore 6;
+				L11:	invokestatic 84;		// javacard/framework/JCSystem.beginTransaction()V
+					getfield_a_this 19;		// reference vault/VaultApplet.work
+					sconst_0;
+					getfield_a_this 12;		// reference vault/VaultApplet.vault
+					sload 5;
+					sconst_2;
+					sadd;
+					sload 6;
+					invokestatic 85;		// javacard/framework/Util.arrayCopy([BS[BSS)S
+					pop;
+					getfield_a_this 12;		// reference vault/VaultApplet.vault
+					sload 5;
+					sconst_1;
+					sadd;
+					sload 6;
+					s2b;
+					bastore;
+					getfield_a_this 12;		// reference vault/VaultApplet.vault
+					sload 5;
+					sspush 226;
+					sadd;
+					sconst_0;
+					bastore;
+					getfield_a_this 12;		// reference vault/VaultApplet.vault
+					sload 5;
+					sconst_0;
+					sadd;
+					sconst_1;
+					bastore;
+					invokestatic 89;		// javacard/framework/JCSystem.commitTransaction()V
+					aload_2;
+					sconst_0;
+					sload 4;
+					s2b;
+					bastore;
+					aload_1;
+					sconst_0;
+					sconst_1;
+					invokevirtual 47;		// setOutgoingAndSend(SS)V
+					return;
+		}
+
+		.method private updateMeta(Ljavacard/framework/APDU;)V {
+			.stack 5;
+			.locals 4;
+
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+				L0:	aload_0;
+					invokespecial 104;		// vault/VaultApplet.requirePin()V
+					aload_1;
+					invokevirtual 43;		// getBuffer()[B
+					astore_2;
+				L1:	aload_0;
+					aload_2;
+					invokespecial 117;		// vault/VaultApplet.usedSlotBase([B)S
+					sstore_3;
+				L2:	aload_1;
+					invokestatic 77;		// vault/VaultApplet.receive(Ljavacard/framework/APDU;)S
+					sstore 4;
+				L3:	aload_2;
+					sconst_5;
+					sload 4;
+					invokestatic 116;		// vault/VaultApplet.checkMeta([BSS)V
+					aload_0;
+					aload_2;
+					sconst_5;
+					sload 4;
+					invokespecial 108;		// vault/VaultApplet.encryptToWork([BSS)S
+					sstore 5;
+				L4:	invokestatic 84;		// javacard/framework/JCSystem.beginTransaction()V
+					getfield_a_this 19;		// reference vault/VaultApplet.work
+					sconst_0;
+					getfield_a_this 12;		// reference vault/VaultApplet.vault
+					sload_3;
+					sconst_2;
+					sadd;
+					sload 5;
+					invokestatic 85;		// javacard/framework/Util.arrayCopy([BS[BSS)S
+					pop;
+					getfield_a_this 12;		// reference vault/VaultApplet.vault
+					sload_3;
+					sconst_1;
+					sadd;
+					sload 5;
+					s2b;
+					bastore;
+					invokestatic 89;		// javacard/framework/JCSystem.commitTransaction()V
+					return;
+		}
+
+		.method private setPassword(Ljavacard/framework/APDU;)V {
+			.stack 5;
+			.locals 4;
+
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+				L0:	aload_0;
+					invokespecial 104;		// vault/VaultApplet.requirePin()V
+					aload_1;
+					invokevirtual 43;		// getBuffer()[B
+					astore_2;
+				L1:	aload_0;
+					aload_2;
+					invokespecial 117;		// vault/VaultApplet.usedSlotBase([B)S
+					sstore_3;
+				L2:	aload_1;
+					invokestatic 77;		// vault/VaultApplet.receive(Ljavacard/framework/APDU;)S
+					sstore 4;
+				L3:	sload 4;
+					ifeq L5;
+				L4:	sload 4;
+					bspush 64;
+					if_scmple L6;
+				L5:	sspush 26368;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L6:	aload_0;
+					aload_2;
+					sconst_5;
+					sload 4;
+					invokespecial 108;		// vault/VaultApplet.encryptToWork([BSS)S
+					sstore 5;
+				L7:	invokestatic 84;		// javacard/framework/JCSystem.beginTransaction()V
+					getfield_a_this 19;		// reference vault/VaultApplet.work
+					sconst_0;
+					getfield_a_this 12;		// reference vault/VaultApplet.vault
+					sload_3;
+					sspush 227;
+					sadd;
+					sload 5;
+					invokestatic 85;		// javacard/framework/Util.arrayCopy([BS[BSS)S
+					pop;
+					getfield_a_this 12;		// reference vault/VaultApplet.vault
+					sload_3;
+					sspush 226;
+					sadd;
+					sload 5;
+					s2b;
+					bastore;
+					invokestatic 89;		// javacard/framework/JCSystem.commitTransaction()V
+					return;
+		}
+
+		.method private getSlotBlob(Ljavacard/framework/APDU;SS)V {
+			.stack 4;
+			.locals 4;
+
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+				L0:	aload_0;
+					invokespecial 104;		// vault/VaultApplet.requirePin()V
+					aload_1;
+					invokevirtual 43;		// getBuffer()[B
+					astore 4;
+				L1:	aload_0;
+					aload 4;
+					invokespecial 117;		// vault/VaultApplet.usedSlotBase([B)S
+					sstore 5;
+				L2:	getfield_a_this 12;		// reference vault/VaultApplet.vault
+					sload 5;
+					sload_2;
+					sadd;
+					baload;
+					sspush 255;
+					sand;
+					sstore 6;
+				L3:	sload 6;
+					ifne L5;
+				L4:	sspush 27272;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L5:	aload_0;
+					getfield_a_this 12;		// reference vault/VaultApplet.vault
+					sload 5;
+					sload_3;
+					sadd;
+					sload 6;
+					invokespecial 110;		// vault/VaultApplet.decryptToScratch([BSS)S
+					sstore 7;
+				L6:	aload_0;
+					aload_1;
+					sload 7;
+					invokespecial 111;		// vault/VaultApplet.sendScratch(Ljavacard/framework/APDU;S)V
+					return;
+		}
+
+		.method private deleteEntry(Ljavacard/framework/APDU;)V {
+			.stack 4;
+			.locals 1;
+
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+				L0:	aload_0;
+					invokespecial 104;		// vault/VaultApplet.requirePin()V
+					aload_0;
+					aload_1;
+					invokevirtual 43;		// getBuffer()[B
+					invokespecial 117;		// vault/VaultApplet.usedSlotBase([B)S
+					sstore_2;
+				L1:	getfield_a_this 12;		// reference vault/VaultApplet.vault
+					sload_2;
+					sconst_0;
+					sadd;
+					sconst_0;
+					bastore;
+					getfield_a_this 12;		// reference vault/VaultApplet.vault
+					sload_2;
+					sconst_1;
+					sadd;
+					sspush 322;
+					sconst_0;
+					invokestatic 114;		// javacard/framework/Util.arrayFillNonAtomic([BSSB)S
+					pop;
+					return;
+		}
+
+		.method private search(Ljavacard/framework/APDU;)V {
+			.stack 6;
+			.locals 10;
+
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+				L0:	aload_0;
+					invokespecial 104;		// vault/VaultApplet.requirePin()V
+					aload_1;
+					invokevirtual 43;		// getBuffer()[B
+					astore_2;
+				L1:	aload_2;
+					sconst_2;
+					baload;
+					sstore_3;
+				L2:	sload_3;
+					ifne L5;
+				L3:	sconst_m1;
+					sstore 4;
+				L4:	goto L13;
+				L5:	sload_3;
+					bspush -128;
+					if_scmpne L8;
+				L6:	sconst_0;
+					sstore 4;
+				L7:	goto L13;
+				L8:	sload_3;
+					ifle L12;
+				L9:	sload_3;
+					sconst_5;
+					if_scmpgt L12;
+				L10:	sload_3;
+					sstore 4;
+				L11:	goto L13;
+				L12:	sspush 27270;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+					return;
+				L13:	aload_1;
+					invokestatic 77;		// vault/VaultApplet.receive(Ljavacard/framework/APDU;)S
+					sstore 5;
+				L14:	sload 5;
+					bspush 32;
+					if_scmple L16;
+				L15:	sspush 26368;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L16:	sconst_5;
+					sstore 6;
+				L17:	getfield_a_this 19;		// reference vault/VaultApplet.work
+					sconst_0;
+					sconst_4;
+					sconst_0;
+					invokestatic 114;		// javacard/framework/Util.arrayFillNonAtomic([BSSB)S
+					pop;
+					sconst_0;
+					sstore 7;
+				L18:	goto_w L37;
+				L19:	sload 7;
+					sspush 323;
+					smul;
+					sstore 8;
+				L20:	getfield_a_this 12;		// reference vault/VaultApplet.vault
+					sload 8;
+					sconst_0;
+					sadd;
+					baload;
+					sconst_1;
+					if_scmpeq L22;
+				L21:	goto L36;
+				L22:	aload_0;
+					getfield_a_this 12;		// reference vault/VaultApplet.vault
+					sload 8;
+					sconst_2;
+					sadd;
+					getfield_a_this 12;		// reference vault/VaultApplet.vault
+					sload 8;
+					sconst_1;
+					sadd;
+					baload;
+					sspush 255;
+					sand;
+					invokespecial 110;		// vault/VaultApplet.decryptToScratch([BSS)S
+					sstore 9;
+				L23:	sload 4;
+					iflt L31;
+				L24:	getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sconst_0;
+					sload 9;
+					bspush 20;
+					invokestatic 118;		// vault/VaultApplet.findTag([BSSB)S
+					sstore 10;
+				L25:	sload 10;
+					ifge L27;
+				L26:	sconst_0;
+					goto L28;
+				L27:	getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sload 10;
+					baload;
+				L28:	sstore 11;
+				L29:	sload 11;
+					sload 4;
+					if_scmpeq L31;
+				L30:	goto L36;
+				L31:	sload 5;
+					ifeq L35;
+				L32:	aload_0;
+					sload 9;
+					bspush 16;
+					aload_2;
+					sload 6;
+					sload 5;
+					invokespecial 119;		// vault/VaultApplet.tagContains(SB[BSS)Z
+					ifne L35;
+				L33:	aload_0;
+					sload 9;
+					bspush 17;
+					aload_2;
+					sload 6;
+					sload 5;
+					invokespecial 119;		// vault/VaultApplet.tagContains(SB[BSS)Z
+					ifne L35;
+				L34:	aload_0;
+					sload 9;
+					bspush 18;
+					aload_2;
+					sload 6;
+					sload 5;
+					invokespecial 119;		// vault/VaultApplet.tagContains(SB[BSS)Z
+					ifeq L36;
+				L35:	getfield_a_this 19;		// reference vault/VaultApplet.work
+					sload 7;
+					invokestatic 115;		// vault/VaultApplet.setBit([BS)V
+				L36:	sinc 7 1;
+				L37:	sload 7;
+					bspush 32;
+					if_scmplt_w L19;
+				L38:	aload_0;
+					invokespecial 90;		// vault/VaultApplet.clearScratch()V
+					getfield_a_this 19;		// reference vault/VaultApplet.work
+					sconst_0;
+					aload_2;
+					sconst_0;
+					sconst_4;
+					invokestatic 46;		// javacard/framework/Util.arrayCopyNonAtomic([BS[BSS)S
+					pop;
+					aload_1;
+					sconst_0;
+					sconst_4;
+					invokevirtual 47;		// setOutgoingAndSend(SS)V
+					return;
+		}
+
+		.method private genPassword(Ljavacard/framework/APDU;)V {
+			.stack 5;
+			.locals 9;
+
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+				L0:	getfield_b_this 13;		// byte vault/VaultApplet.cardState
+					sconst_1;
+					if_scmpeq L2;
+				L1:	sspush 27013;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L2:	aload_1;
+					invokevirtual 43;		// getBuffer()[B
+					astore_2;
+				L3:	aload_2;
+					sconst_2;
+					baload;
+					sspush 255;
+					sand;
+					sstore_3;
+				L4:	aload_2;
+					sconst_3;
+					baload;
+					sstore 4;
+				L5:	sload_3;
+					bspush 8;
+					if_scmplt L9;
+				L6:	sload_3;
+					bspush 64;
+					if_scmpgt L9;
+				L7:	sload 4;
+					ifeq L9;
+				L8:	sload 4;
+					sspush 240;
+					sand;
+					ifeq L10;
+				L9:	sspush 27270;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L10:	sconst_0;
+					sstore 5;
+				L11:	sload 4;
+					sconst_1;
+					sand;
+					ifeq L13;
+				L12:	aload_0;
+					sload 5;
+					bspush 97;
+					bspush 26;
+					invokespecial 120;		// vault/VaultApplet.appendRange(SBS)S
+					sstore 5;
+				L13:	sload 4;
+					sconst_2;
+					sand;
+					ifeq L15;
+				L14:	aload_0;
+					sload 5;
+					bspush 65;
+					bspush 26;
+					invokespecial 120;		// vault/VaultApplet.appendRange(SBS)S
+					sstore 5;
+				L15:	sload 4;
+					sconst_4;
+					sand;
+					ifeq L17;
+				L16:	aload_0;
+					sload 5;
+					bspush 48;
+					bspush 10;
+					invokespecial 120;		// vault/VaultApplet.appendRange(SBS)S
+					sstore 5;
+				L17:	sload 4;
+					bspush 8;
+					sand;
+					ifeq L19;
+				L18:	getstatic_a 121;		// reference vault/VaultApplet.SYMBOLS
+					sconst_0;
+					getfield_a_this 19;		// reference vault/VaultApplet.work
+					sload 5;
+					getstatic_a 121;		// reference vault/VaultApplet.SYMBOLS
+					arraylength;
+					invokestatic 46;		// javacard/framework/Util.arrayCopyNonAtomic([BS[BSS)S
+					sstore 5;
+				L19:	sspush 256;
+					sspush 256;
+					sload 5;
+					srem;
+					ssub;
+					sstore 6;
+				L20:	bspush 64;
+					sstore 7;
+				L21:	sconst_0;
+					sstore 8;
+				L22:	goto L35;
+				L23:	sconst_0;
+					sstore 9;
+				L24:	goto L31;
+				L25:	sload 7;
+					bspush 64;
+					if_scmpne L27;
+				L26:	getfield_a_this 24;		// reference vault/VaultApplet.rng
+					getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sconst_0;
+					bspush 64;
+					invokevirtual 82;		// nextBytes([BSS)S
+					pop;
+					sconst_0;
+					sstore 7;
+				L27:	getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sload 7;
+					dup;
+					sconst_1;
+					sadd;
+					sstore 7;
+					baload;
+					sspush 255;
+					sand;
+					sstore 10;
+				L28:	sload 10;
+					sload 6;
+					if_scmpge L25;
+				L29:	aload_2;
+					sload 9;
+					getfield_a_this 19;		// reference vault/VaultApplet.work
+					sload 10;
+					sload 5;
+					srem;
+					baload;
+					bastore;
+				L30:	sinc 9 1;
+				L31:	sload 9;
+					sload_3;
+					if_scmplt L25;
+				L32:	aload_2;
+					sload_3;
+					invokestatic 122;		// vault/VaultApplet.charClasses([BS)B
+					sload 4;
+					if_scmpne L34;
+				L33:	aload_0;
+					invokespecial 90;		// vault/VaultApplet.clearScratch()V
+					aload_1;
+					sconst_0;
+					sload_3;
+					invokevirtual 47;		// setOutgoingAndSend(SS)V
+					return;
+				L34:	sinc 8 1;
+				L35:	sload 8;
+					bspush 100;
+					if_scmplt L23;
+				L36:	sspush 28416;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+					return;
+		}
+
+		.method private backupBegin(Ljavacard/framework/APDU;)V {
+			.stack 8;
+			.locals 2;
+
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+				L0:	aload_0;
+					invokespecial 104;		// vault/VaultApplet.requirePin()V
+					aload_1;
+					invokevirtual 43;		// getBuffer()[B
+					astore_2;
+				L1:	aload_1;
+					invokestatic 77;		// vault/VaultApplet.receive(Ljavacard/framework/APDU;)S
+					sstore_3;
+				L2:	sload_3;
+					invokestatic 123;		// vault/VaultApplet.checkPassphrase(S)V
+					getfield_a_this 16;		// reference vault/VaultApplet.session
+					sconst_0;
+					dup2;
+					baload;
+					bspush -17;
+					sand;
+					bastore;
+					getfield_a_this 24;		// reference vault/VaultApplet.rng
+					getfield_a_this 19;		// reference vault/VaultApplet.work
+					sconst_0;
+					bspush 16;
+					invokevirtual 82;		// nextBytes([BSS)S
+					pop;
+					aload_0;
+					getfield_a_this 19;		// reference vault/VaultApplet.work
+					sconst_0;
+					aload_2;
+					sconst_5;
+					sload_3;
+					getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sspush 176;
+					invokespecial 124;		// vault/VaultApplet.hashWithSalt([BS[BSS[BS)V
+					getfield_a_this 22;		// reference vault/VaultApplet.kekKey
+					getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sspush 176;
+					invokeinterface 3 113 4;		// javacard/security/AESKey
+					getfield_a_this 21;		// reference vault/VaultApplet.sessionMk
+					getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sconst_0;
+					invokeinterface 3 113 5;		// javacard/security/AESKey
+					pop;
+					getfield_a_this 26;		// reference vault/VaultApplet.aesCbc
+					getfield_a_this 22;		// reference vault/VaultApplet.kekKey
+					sconst_2;
+					invokevirtual 125;		// init(Ljavacard/security/Key;B)V
+					getfield_a_this 26;		// reference vault/VaultApplet.aesCbc
+					getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sconst_0;
+					bspush 16;
+					getfield_a_this 19;		// reference vault/VaultApplet.work
+					bspush 16;
+					invokevirtual 126;		// doFinal([BSS[BS)S
+					pop;
+					getfield_a_this 22;		// reference vault/VaultApplet.kekKey
+					invokeinterface 1 113 0;		// javacard/security/AESKey
+					getfield_a_this 26;		// reference vault/VaultApplet.aesCbc
+					getfield_a_this 21;		// reference vault/VaultApplet.sessionMk
+					sconst_2;
+					invokevirtual 125;		// init(Ljavacard/security/Key;B)V
+					getfield_a_this 26;		// reference vault/VaultApplet.aesCbc
+					getstatic_a 127;		// reference vault/VaultApplet.BACKUP_CHECK
+					sconst_0;
+					bspush 16;
+					getfield_a_this 19;		// reference vault/VaultApplet.work
+					bspush 32;
+					invokevirtual 126;		// doFinal([BSS[BS)S
+					pop;
+					aload_0;
+					invokespecial 90;		// vault/VaultApplet.clearScratch()V
+					getfield_a_this 16;		// reference vault/VaultApplet.session
+					sconst_0;
+					dup2;
+					baload;
+					bspush 16;
+					sor;
+					bastore;
+					getfield_a_this 19;		// reference vault/VaultApplet.work
+					sconst_0;
+					aload_2;
+					sconst_0;
+					bspush 48;
+					invokestatic 46;		// javacard/framework/Util.arrayCopyNonAtomic([BS[BSS)S
+					pop;
+					aload_1;
+					sconst_0;
+					bspush 48;
+					invokevirtual 47;		// setOutgoingAndSend(SS)V
+					return;
+		}
+
+		.method private backupRead(Ljavacard/framework/APDU;)V {
+			.stack 5;
+			.locals 4;
+
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+				L0:	aload_0;
+					invokespecial 104;		// vault/VaultApplet.requirePin()V
+					getfield_a_this 16;		// reference vault/VaultApplet.session
+					sconst_0;
+					baload;
+					bspush 16;
+					sand;
+					ifne L2;
+				L1:	sspush 27013;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L2:	aload_1;
+					invokevirtual 43;		// getBuffer()[B
+					astore_2;
+				L3:	aload_2;
+					sconst_3;
+					baload;
+					sstore_3;
+				L4:	sload_3;
+					ifeq L7;
+				L5:	sload_3;
+					sconst_1;
+					if_scmpeq L7;
+				L6:	sspush 27270;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L7:	aload_0;
+					aload_2;
+					invokespecial 117;		// vault/VaultApplet.usedSlotBase([B)S
+					sstore 4;
+				L8:	getfield_a_this 12;		// reference vault/VaultApplet.vault
+					sload 4;
+					sload_3;
+					ifne L10;
+				L9:	sconst_1;
+					goto L11;
+				L10:	sspush 226;
+				L11:	sadd;
+					baload;
+					sspush 255;
+					sand;
+					sstore 5;
+				L12:	sload 5;
+					ifne L14;
+				L13:	sspush 27272;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L14:	getfield_a_this 12;		// reference vault/VaultApplet.vault
+					sload 4;
+					sload_3;
+					ifne L16;
+				L15:	sconst_2;
+					goto L17;
+				L16:	sspush 227;
+				L17:	sadd;
+					aload_2;
+					sconst_0;
+					sload 5;
+					invokestatic 46;		// javacard/framework/Util.arrayCopyNonAtomic([BS[BSS)S
+					pop;
+					aload_1;
+					sconst_0;
+					sload 5;
+					invokevirtual 47;		// setOutgoingAndSend(SS)V
+					return;
+		}
+
+		.method private restoreBegin(Ljavacard/framework/APDU;)V {
+			.stack 8;
+			.locals 9;
+
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+				L0:	aload_0;
+					invokespecial 104;		// vault/VaultApplet.requirePin()V
+					aload_1;
+					invokevirtual 43;		// getBuffer()[B
+					astore_2;
+				L1:	aload_1;
+					invokestatic 77;		// vault/VaultApplet.receive(Ljavacard/framework/APDU;)S
+					sstore_3;
+				L2:	getfield_a_this 16;		// reference vault/VaultApplet.session
+					sconst_0;
+					dup2;
+					baload;
+					bspush -33;
+					sand;
+					bastore;
+					getfield_a_this 23;		// reference vault/VaultApplet.restoreMk
+					invokeinterface 1 113 0;		// javacard/security/AESKey
+					sconst_5;
+					sstore 4;
+				L3:	aload_2;
+					sload 4;
+					dup;
+					sconst_1;
+					sadd;
+					sstore 4;
+					baload;
+					sspush 255;
+					sand;
+					sstore 5;
+				L4:	sconst_1;
+					sload 5;
+					sadd;
+					bspush 48;
+					sadd;
+					sload_3;
+					if_scmpeq L6;
+				L5:	sspush 26368;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L6:	sload 5;
+					invokestatic 123;		// vault/VaultApplet.checkPassphrase(S)V
+					sload 4;
+					sstore 6;
+				L7:	sload 6;
+					sload 5;
+					sadd;
+					sstore 7;
+				L8:	sload 7;
+					bspush 16;
+					sadd;
+					sstore 8;
+				L9:	sload 8;
+					bspush 16;
+					sadd;
+					sstore 9;
+				L10:	aload_0;
+					aload_2;
+					sload 7;
+					aload_2;
+					sload 6;
+					sload 5;
+					getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sspush 176;
+					invokespecial 124;		// vault/VaultApplet.hashWithSalt([BS[BSS[BS)V
+					getfield_a_this 22;		// reference vault/VaultApplet.kekKey
+					getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sspush 176;
+					invokeinterface 3 113 4;		// javacard/security/AESKey
+					getfield_a_this 26;		// reference vault/VaultApplet.aesCbc
+					getfield_a_this 22;		// reference vault/VaultApplet.kekKey
+					sconst_1;
+					invokevirtual 125;		// init(Ljavacard/security/Key;B)V
+					getfield_a_this 26;		// reference vault/VaultApplet.aesCbc
+					aload_2;
+					sload 8;
+					bspush 16;
+					getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sconst_0;
+					invokevirtual 126;		// doFinal([BSS[BS)S
+					pop;
+					getfield_a_this 22;		// reference vault/VaultApplet.kekKey
+					invokeinterface 1 113 0;		// javacard/security/AESKey
+					getfield_a_this 23;		// reference vault/VaultApplet.restoreMk
+					getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sconst_0;
+					invokeinterface 3 113 4;		// javacard/security/AESKey
+					getfield_a_this 26;		// reference vault/VaultApplet.aesCbc
+					getfield_a_this 23;		// reference vault/VaultApplet.restoreMk
+					sconst_2;
+					invokevirtual 125;		// init(Ljavacard/security/Key;B)V
+					getfield_a_this 26;		// reference vault/VaultApplet.aesCbc
+					getstatic_a 127;		// reference vault/VaultApplet.BACKUP_CHECK
+					sconst_0;
+					bspush 16;
+					getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sspush 176;
+					invokevirtual 126;		// doFinal([BSS[BS)S
+					pop;
+					getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sspush 176;
+					aload_2;
+					sload 9;
+					bspush 16;
+					invokestatic 98;		// javacard/framework/Util.arrayCompare([BS[BSS)B
+					ifne L12;
+				L11:	sconst_1;
+					goto L13;
+				L12:	sconst_0;
+				L13:	sstore 10;
+				L14:	aload_0;
+					invokespecial 90;		// vault/VaultApplet.clearScratch()V
+					sload 10;
+					ifne L16;
+				L15:	getfield_a_this 23;		// reference vault/VaultApplet.restoreMk
+					invokeinterface 1 113 0;		// javacard/security/AESKey
+					sspush 25344;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L16:	getfield_a_this 16;		// reference vault/VaultApplet.session
+					sconst_0;
+					dup2;
+					baload;
+					bspush 32;
+					sor;
+					bastore;
+					return;
+		}
+
+		.method private restoreWrite(Ljavacard/framework/APDU;)V {
+			.stack 5;
+			.locals 8;
+
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+				L0:	aload_0;
+					invokespecial 104;		// vault/VaultApplet.requirePin()V
+					getfield_a_this 16;		// reference vault/VaultApplet.session
+					sconst_0;
+					baload;
+					bspush 32;
+					sand;
+					ifeq L2;
+				L1:	getfield_a_this 23;		// reference vault/VaultApplet.restoreMk
+					invokeinterface 1 113 3;		// javacard/security/AESKey
+					ifne L3;
+				L2:	sspush 27013;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L3:	aload_1;
+					invokevirtual 43;		// getBuffer()[B
+					astore_2;
+				L4:	aload_2;
+					sconst_3;
+					baload;
+					sstore_3;
+				L5:	aload_2;
+					sconst_2;
+					baload;
+					sspush 255;
+					sand;
+					sstore 4;
+				L6:	sload_3;
+					ifeq L8;
+				L7:	sload_3;
+					sconst_1;
+					if_scmpne L9;
+				L8:	sload 4;
+					bspush 32;
+					if_scmplt L10;
+				L9:	sspush 27270;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L10:	sload 4;
+					sspush 323;
+					smul;
+					sstore 5;
+				L11:	sload_3;
+					sconst_1;
+					if_scmpne L14;
+				L12:	getfield_a_this 12;		// reference vault/VaultApplet.vault
+					sload 5;
+					sconst_0;
+					sadd;
+					baload;
+					sconst_1;
+					if_scmpeq L14;
+				L13:	sspush 27272;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L14:	aload_1;
+					invokestatic 77;		// vault/VaultApplet.receive(Ljavacard/framework/APDU;)S
+					sstore 6;
+				L15:	sload_3;
+					ifne L17;
+				L16:	sspush 224;
+					goto L18;
+				L17:	bspush 96;
+				L18:	sstore 7;
+				L19:	sload 6;
+					bspush 32;
+					if_scmplt L22;
+				L20:	sload 6;
+					sload 7;
+					if_scmpgt L22;
+				L21:	sload 6;
+					bspush 15;
+					sand;
+					ifeq L23;
+				L22:	sspush 26368;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L23:	aload_0;
+					getfield_a_this 23;		// reference vault/VaultApplet.restoreMk
+					aload_2;
+					sconst_5;
+					sload 6;
+					invokespecial 128;		// vault/VaultApplet.decryptToScratch(Ljavacard/security/AESKey;[BSS)S
+					sstore 8;
+				L24:	sload_3;
+					ifne L26;
+				L25:	getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sconst_0;
+					sload 8;
+					invokestatic 116;		// vault/VaultApplet.checkMeta([BSS)V
+					goto L29;
+				L26:	sload 8;
+					ifeq L28;
+				L27:	sload 8;
+					bspush 64;
+					if_scmple L29;
+				L28:	sspush 27264;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L29:	aload_0;
+					getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sconst_0;
+					sload 8;
+					invokespecial 108;		// vault/VaultApplet.encryptToWork([BSS)S
+					sstore 9;
+				L30:	invokestatic 84;		// javacard/framework/JCSystem.beginTransaction()V
+					sload_3;
+					ifne L32;
+				L31:	getfield_a_this 19;		// reference vault/VaultApplet.work
+					sconst_0;
+					getfield_a_this 12;		// reference vault/VaultApplet.vault
+					sload 5;
+					sconst_2;
+					sadd;
+					sload 9;
+					invokestatic 85;		// javacard/framework/Util.arrayCopy([BS[BSS)S
+					pop;
+					getfield_a_this 12;		// reference vault/VaultApplet.vault
+					sload 5;
+					sconst_1;
+					sadd;
+					sload 9;
+					s2b;
+					bastore;
+					getfield_a_this 12;		// reference vault/VaultApplet.vault
+					sload 5;
+					sspush 226;
+					sadd;
+					sconst_0;
+					bastore;
+					getfield_a_this 12;		// reference vault/VaultApplet.vault
+					sload 5;
+					sconst_0;
+					sadd;
+					sconst_1;
+					bastore;
+					goto L33;
+				L32:	getfield_a_this 19;		// reference vault/VaultApplet.work
+					sconst_0;
+					getfield_a_this 12;		// reference vault/VaultApplet.vault
+					sload 5;
+					sspush 227;
+					sadd;
+					sload 9;
+					invokestatic 85;		// javacard/framework/Util.arrayCopy([BS[BSS)S
+					pop;
+					getfield_a_this 12;		// reference vault/VaultApplet.vault
+					sload 5;
+					sspush 226;
+					sadd;
+					sload 9;
+					s2b;
+					bastore;
+				L33:	invokestatic 89;		// javacard/framework/JCSystem.commitTransaction()V
+					return;
+		}
+
+		.method private static checkPassphrase(S)V {
+			.stack 2;
+			.locals 0;
+
+				L0:	sload_0;
+					bspush 8;
+					if_scmplt L2;
+				L1:	sload_0;
+					bspush 64;
+					if_scmple L3;
+				L2:	sspush 27264;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L3:	return;
+		}
+
+		.method private adminChallenge(Ljavacard/framework/APDU;)V {
+			.stack 5;
+			.locals 1;
+
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+				L0:	aload_0;
+					invokespecial 99;		// vault/VaultApplet.requireIssuedAlive()V
+					aload_1;
+					invokevirtual 43;		// getBuffer()[B
+					astore_2;
+				L1:	getfield_a_this 24;		// reference vault/VaultApplet.rng
+					getfield_a_this 20;		// reference vault/VaultApplet.adminChallenge
+					sconst_0;
+					bspush 16;
+					invokevirtual 82;		// nextBytes([BSS)S
+					pop;
+					getfield_a_this 16;		// reference vault/VaultApplet.session
+					sconst_0;
+					getfield_a_this 16;		// reference vault/VaultApplet.session
+					sconst_0;
+					baload;
+					bspush -3;
+					sand;
+					bspush 8;
+					sor;
+					bastore;
+					getfield_a_this 20;		// reference vault/VaultApplet.adminChallenge
+					sconst_0;
+					aload_2;
+					sconst_0;
+					bspush 16;
+					invokestatic 46;		// javacard/framework/Util.arrayCopyNonAtomic([BS[BSS)S
+					pop;
+					aload_1;
+					sconst_0;
+					bspush 16;
+					invokevirtual 47;		// setOutgoingAndSend(SS)V
+					return;
+		}
+
+		.method private adminAuth(Ljavacard/framework/APDU;)V {
+			.stack 6;
+			.locals 3;
+
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+				L0:	getfield_a_this 16;		// reference vault/VaultApplet.session
+					sconst_0;
+					baload;
+					bspush 8;
+					sand;
+					ifne L2;
+				L1:	sspush 27013;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L2:	getfield_a_this 16;		// reference vault/VaultApplet.session
+					sconst_0;
+					dup2;
+					baload;
+					bspush -9;
+					sand;
+					bastore;
+					aload_1;
+					invokevirtual 43;		// getBuffer()[B
+					astore_2;
+				L3:	aload_1;
+					invokestatic 77;		// vault/VaultApplet.receive(Ljavacard/framework/APDU;)S
+					sstore_3;
+				L4:	sload_3;
+					bspush 16;
+					if_scmpeq L6;
+				L5:	sspush 26368;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L6:	getfield_a_this 26;		// reference vault/VaultApplet.aesCbc
+					getfield_a_this 14;		// reference vault/VaultApplet.adminKey
+					sconst_2;
+					invokevirtual 125;		// init(Ljavacard/security/Key;B)V
+					getfield_a_this 26;		// reference vault/VaultApplet.aesCbc
+					getfield_a_this 20;		// reference vault/VaultApplet.adminChallenge
+					sconst_0;
+					bspush 16;
+					getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sconst_0;
+					invokevirtual 126;		// doFinal([BSS[BS)S
+					pop;
+					getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sconst_0;
+					aload_2;
+					sconst_5;
+					bspush 16;
+					invokestatic 98;		// javacard/framework/Util.arrayCompare([BS[BSS)B
+					ifne L8;
+				L7:	sconst_1;
+					goto L9;
+				L8:	sconst_0;
+				L9:	sstore 4;
+				L10:	getfield_a_this 20;		// reference vault/VaultApplet.adminChallenge
+					sconst_0;
+					bspush 16;
+					sconst_0;
+					invokestatic 114;		// javacard/framework/Util.arrayFillNonAtomic([BSSB)S
+					pop;
+					getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sconst_0;
+					bspush 16;
+					sconst_0;
+					invokestatic 114;		// javacard/framework/Util.arrayFillNonAtomic([BSSB)S
+					pop;
+					sload 4;
+					ifne L12;
+				L11:	sspush 27010;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L12:	getfield_a_this 16;		// reference vault/VaultApplet.session
+					sconst_0;
+					dup2;
+					baload;
+					sconst_2;
+					sor;
+					bastore;
+					return;
+		}
+
+		.method private adminLock(Ljavacard/framework/APDU;)V {
+			.stack 4;
+			.locals 1;
+
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+				L0:	aload_0;
+					invokespecial 129;		// vault/VaultApplet.requireAdmin()V
+					aload_1;
+					invokevirtual 43;		// getBuffer()[B
+					sconst_2;
+					baload;
+					sstore_2;
+				L1:	sload_2;
+					sconst_1;
+					if_scmpne L6;
+				L2:	getfield_b_this 13;		// byte vault/VaultApplet.cardState
+					sconst_1;
+					if_scmpne L4;
+				L3:	sconst_3;
+					putfield_b_this 13;		// byte vault/VaultApplet.cardState
+					getfield_a_this 16;		// reference vault/VaultApplet.session
+					sconst_0;
+					dup2;
+					baload;
+					bspush -6;
+					sand;
+					bastore;
+					getfield_a_this 21;		// reference vault/VaultApplet.sessionMk
+					invokeinterface 1 113 0;		// javacard/security/AESKey
+					goto L12;
+				L4:	getfield_b_this 13;		// byte vault/VaultApplet.cardState
+					sconst_3;
+					if_scmpeq L12;
+				L5:	sspush 27013;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+					goto L12;
+				L6:	sload_2;
+					ifne L11;
+				L7:	getfield_b_this 13;		// byte vault/VaultApplet.cardState
+					sconst_3;
+					if_scmpne L9;
+				L8:	sconst_1;
+					putfield_b_this 13;		// byte vault/VaultApplet.cardState
+					goto L12;
+				L9:	getfield_b_this 13;		// byte vault/VaultApplet.cardState
+					sconst_1;
+					if_scmpeq L12;
+				L10:	sspush 27013;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+					goto L12;
+				L11:	sspush 27270;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L12:	return;
+		}
+
+		.method private revoke()V {
+			.stack 2;
+			.locals 0;
+
+				L0:	aload_0;
+					invokespecial 129;		// vault/VaultApplet.requireAdmin()V
+					aload_0;
+					invokespecial 99;		// vault/VaultApplet.requireIssuedAlive()V
+					aload_0;
+					sconst_4;
+					invokespecial 96;		// vault/VaultApplet.wipeKeysAndSetState(B)V
+					return;
+		}
+
+		.method private requirePin()V {
+			.stack 2;
+			.locals 0;
+
+				L0:	getfield_b_this 13;		// byte vault/VaultApplet.cardState
+					sconst_1;
+					if_scmpeq L2;
+				L1:	sspush 27013;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L2:	getfield_a_this 16;		// reference vault/VaultApplet.session
+					sconst_0;
+					baload;
+					sconst_1;
+					sand;
+					ifeq L4;
+				L3:	getfield_a_this 21;		// reference vault/VaultApplet.sessionMk
+					invokeinterface 1 113 3;		// javacard/security/AESKey
+					ifne L5;
+				L4:	sspush 27010;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L5:	return;
+		}
+
+		.method private requireAdmin()V {
+			.stack 2;
+			.locals 0;
+
+				L0:	getfield_a_this 16;		// reference vault/VaultApplet.session
+					sconst_0;
+					baload;
+					sconst_2;
+					sand;
+					ifne L2;
+				L1:	sspush 27010;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L2:	return;
+		}
+
+		.method private requireIssuedAlive()V {
+			.stack 2;
+			.locals 0;
+
+				L0:	getfield_b_this 13;		// byte vault/VaultApplet.cardState
+					sconst_1;
+					if_scmpeq L4;
+				L1:	getfield_b_this 13;		// byte vault/VaultApplet.cardState
+					sconst_2;
+					if_scmpeq L4;
+				L2:	getfield_b_this 13;		// byte vault/VaultApplet.cardState
+					sconst_3;
+					if_scmpeq L4;
+				L3:	sspush 27013;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L4:	return;
+		}
+
+		.method private requirePinUsable()V {
+			.stack 2;
+			.locals 0;
+
+				L0:	getfield_b_this 13;		// byte vault/VaultApplet.cardState
+					sconst_2;
+					if_scmpne L2;
+				L1:	sspush 27011;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L2:	getfield_b_this 13;		// byte vault/VaultApplet.cardState
+					sconst_1;
+					if_scmpeq L4;
+				L3:	sspush 27013;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L4:	return;
+		}
+
+		.method private usedSlotBase([B)S {
+			.stack 3;
+			.locals 2;
+
+				L0:	aload_1;
+					sconst_2;
+					baload;
+					sspush 255;
+					sand;
+					sstore_2;
+				L1:	sload_2;
+					bspush 32;
+					if_scmplt L3;
+				L2:	sspush 27270;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L3:	sload_2;
+					sspush 323;
+					smul;
+					sstore_3;
+				L4:	getfield_a_this 12;		// reference vault/VaultApplet.vault
+					sload_3;
+					sconst_0;
+					sadd;
+					baload;
+					sconst_1;
+					if_scmpeq L6;
+				L5:	sspush 27272;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L6:	sload_3;
+					sreturn;
+		}
+
+		.method private checkPinOrThrow([BSS)V {
+			.stack 7;
+			.locals 1;
+
+				L0:	getfield_b_this 28;		// byte vault/VaultApplet.pinTriesLeft
+					ifne L2;
+				L1:	aload_0;
+					invokespecial 130;		// vault/VaultApplet.blockPin()V
+				L2:	aload_0;
+					dup;
+					getfield_b 28;		// byte vault/VaultApplet.pinTriesLeft
+					sconst_1;
+					ssub;
+					s2b;
+					putfield_b 28;		// byte vault/VaultApplet.pinTriesLeft
+					aload_0;
+					getfield_a_this 1;		// reference vault/VaultApplet.pinSalt
+					aload_1;
+					sload_2;
+					sload_3;
+					getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sspush 176;
+					invokespecial 97;		// vault/VaultApplet.hashWithSalt([B[BSS[BS)V
+					getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sspush 176;
+					getfield_a_this 2;		// reference vault/VaultApplet.pinHash
+					sconst_0;
+					bspush 32;
+					invokestatic 98;		// javacard/framework/Util.arrayCompare([BS[BSS)B
+					ifne L4;
+				L3:	sconst_1;
+					goto L5;
+				L4:	sconst_0;
+				L5:	sstore 4;
+				L6:	getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sspush 176;
+					bspush 32;
+					sconst_0;
+					invokestatic 114;		// javacard/framework/Util.arrayFillNonAtomic([BSSB)S
+					pop;
+					sload 4;
+					ifeq L8;
+				L7:	sconst_3;
+					putfield_b_this 28;		// byte vault/VaultApplet.pinTriesLeft
+					return;
+				L8:	getfield_b_this 28;		// byte vault/VaultApplet.pinTriesLeft
+					ifne L10;
+				L9:	aload_0;
+					invokespecial 130;		// vault/VaultApplet.blockPin()V
+				L10:	sspush 25536;
+					getfield_b_this 28;		// byte vault/VaultApplet.pinTriesLeft
+					sor;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+					return;
+		}
+
+		.method private blockPin()V {
+			.stack 2;
+			.locals 0;
+
+				L0:	aload_0;
+					invokespecial 54;		// vault/VaultApplet.clearSession()V
+					sconst_2;
+					putfield_b_this 13;		// byte vault/VaultApplet.cardState
+					sspush 27011;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+					return;
+		}
+
+		.method private wipeKeysAndSetState(B)V {
+			.stack 3;
+			.locals 1;
+
+				L0:	aload_0;
+					invokespecial 54;		// vault/VaultApplet.clearSession()V
+					invokestatic 84;		// javacard/framework/JCSystem.beginTransaction()V
+					sconst_0;
+					sstore_2;
+				L1:	goto L3;
+				L2:	getfield_a_this 7;		// reference vault/VaultApplet.mkByPin
+					sload_2;
+					sconst_0;
+					bastore;
+					getfield_a_this 8;		// reference vault/VaultApplet.mkByPuk
+					sload_2;
+					sconst_0;
+					bastore;
+					sinc 2 1;
+				L3:	sload_2;
+					bspush 16;
+					if_scmplt L2;
+				L4:	sload_1;
+					putfield_b_this 13;		// byte vault/VaultApplet.cardState
+					invokestatic 89;		// javacard/framework/JCSystem.commitTransaction()V
+					return;
+		}
+
+		.method private deriveCredential([BSSSSSS)V {
+			.stack 8;
+			.locals 0;
+
+				L0:	getfield_a_this 24;		// reference vault/VaultApplet.rng
+					getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sload 4;
+					bspush 16;
+					invokevirtual 82;		// nextBytes([BSS)S
+					pop;
+					getfield_a_this 24;		// reference vault/VaultApplet.rng
+					getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sload 5;
+					bspush 16;
+					invokevirtual 82;		// nextBytes([BSS)S
+					pop;
+					aload_0;
+					getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sload 4;
+					aload_1;
+					sload_2;
+					sload_3;
+					getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sload 6;
+					invokespecial 124;		// vault/VaultApplet.hashWithSalt([BS[BSS[BS)V
+					aload_0;
+					getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sload 5;
+					aload_1;
+					sload_2;
+					sload_3;
+					getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sspush 176;
+					invokespecial 124;		// vault/VaultApplet.hashWithSalt([BS[BSS[BS)V
+					getfield_a_this 22;		// reference vault/VaultApplet.kekKey
+					getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sspush 176;
+					invokeinterface 3 113 4;		// javacard/security/AESKey
+					getfield_a_this 26;		// reference vault/VaultApplet.aesCbc
+					getfield_a_this 22;		// reference vault/VaultApplet.kekKey
+					sconst_2;
+					invokevirtual 125;		// init(Ljavacard/security/Key;B)V
+					getfield_a_this 26;		// reference vault/VaultApplet.aesCbc
+					getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sconst_0;
+					bspush 16;
+					getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sload 7;
+					invokevirtual 126;		// doFinal([BSS[BS)S
+					pop;
+					getfield_a_this 22;		// reference vault/VaultApplet.kekKey
+					invokeinterface 1 113 0;		// javacard/security/AESKey
+					getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sspush 176;
+					bspush 32;
+					sconst_0;
+					invokestatic 114;		// javacard/framework/Util.arrayFillNonAtomic([BSSB)S
+					pop;
+					return;
+		}
+
+		.method private unwrapMk([BSS[B[B)V {
+			.stack 7;
+			.locals 0;
+
+				L0:	aload_0;
+					aload 4;
+					aload_1;
+					sload_2;
+					sload_3;
+					getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sspush 176;
+					invokespecial 97;		// vault/VaultApplet.hashWithSalt([B[BSS[BS)V
+					getfield_a_this 22;		// reference vault/VaultApplet.kekKey
+					getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sspush 176;
+					invokeinterface 3 113 4;		// javacard/security/AESKey
+					getfield_a_this 26;		// reference vault/VaultApplet.aesCbc
+					getfield_a_this 22;		// reference vault/VaultApplet.kekKey
+					sconst_1;
+					invokevirtual 125;		// init(Ljavacard/security/Key;B)V
+					getfield_a_this 26;		// reference vault/VaultApplet.aesCbc
+					aload 5;
+					sconst_0;
+					bspush 16;
+					getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sconst_0;
+					invokevirtual 126;		// doFinal([BSS[BS)S
+					pop;
+					getfield_a_this 22;		// reference vault/VaultApplet.kekKey
+					invokeinterface 1 113 0;		// javacard/security/AESKey
+					getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sspush 176;
+					bspush 32;
+					sconst_0;
+					invokestatic 114;		// javacard/framework/Util.arrayFillNonAtomic([BSSB)S
+					pop;
+					return;
+		}
+
+		.method private storePinCredential()V {
+			.stack 5;
+			.locals 0;
+
+				L0:	getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					bspush 16;
+					getfield_a_this 1;		// reference vault/VaultApplet.pinSalt
+					sconst_0;
+					bspush 16;
+					invokestatic 85;		// javacard/framework/Util.arrayCopy([BS[BSS)S
+					pop;
+					getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					bspush 32;
+					getfield_a_this 3;		// reference vault/VaultApplet.pinKekSalt
+					sconst_0;
+					bspush 16;
+					invokestatic 85;		// javacard/framework/Util.arrayCopy([BS[BSS)S
+					pop;
+					getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					bspush 48;
+					getfield_a_this 2;		// reference vault/VaultApplet.pinHash
+					sconst_0;
+					bspush 32;
+					invokestatic 85;		// javacard/framework/Util.arrayCopy([BS[BSS)S
+					pop;
+					getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					bspush 80;
+					getfield_a_this 7;		// reference vault/VaultApplet.mkByPin
+					sconst_0;
+					bspush 16;
+					invokestatic 85;		// javacard/framework/Util.arrayCopy([BS[BSS)S
+					pop;
+					return;
+		}
+
+		.method private hashWithSalt([B[BSS[BS)V {
+			.stack 8;
+			.locals 0;
+
+				L0:	aload_0;
+					aload_1;
+					sconst_0;
+					aload_2;
+					sload_3;
+					sload 4;
+					aload 5;
+					sload 6;
+					invokespecial 124;		// vault/VaultApplet.hashWithSalt([BS[BSS[BS)V
+					return;
+		}
+
+		.method private hashWithSalt([BS[BSS[BS)V {
+			.stack 6;
+			.locals 0;
+
+				L0:	getfield_a_this 25;		// reference vault/VaultApplet.sha256
+					invokevirtual 131;		// reset()V
+					getfield_a_this 25;		// reference vault/VaultApplet.sha256
+					aload_1;
+					sload_2;
+					bspush 16;
+					invokevirtual 132;		// update([BSS)V
+					getfield_a_this 25;		// reference vault/VaultApplet.sha256
+					aload_3;
+					sload 4;
+					sload 5;
+					aload 6;
+					sload 7;
+					invokevirtual 133;		// doFinal([BSS[BS)S
+					pop;
+					return;
+		}
+
+		.method private encryptToWork([BSS)S {
+			.stack 6;
+			.locals 2;
+
+				L0:	aload_1;
+					sload_2;
+					getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sconst_0;
+					sload_3;
+					invokestatic 46;		// javacard/framework/Util.arrayCopyNonAtomic([BS[BSS)S
+					pop;
+					getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sload_3;
+					invokestatic 134;		// vault/VaultApplet.pad([BS)S
+					sstore 4;
+				L1:	getfield_a_this 24;		// reference vault/VaultApplet.rng
+					getfield_a_this 19;		// reference vault/VaultApplet.work
+					sconst_0;
+					bspush 16;
+					invokevirtual 82;		// nextBytes([BSS)S
+					pop;
+					getfield_a_this 26;		// reference vault/VaultApplet.aesCbc
+					getfield_a_this 21;		// reference vault/VaultApplet.sessionMk
+					sconst_2;
+					getfield_a_this 19;		// reference vault/VaultApplet.work
+					sconst_0;
+					bspush 16;
+					invokevirtual 135;		// init(Ljavacard/security/Key;B[BSS)V
+					getfield_a_this 26;		// reference vault/VaultApplet.aesCbc
+					getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sconst_0;
+					sload 4;
+					getfield_a_this 19;		// reference vault/VaultApplet.work
+					bspush 16;
+					invokevirtual 126;		// doFinal([BSS[BS)S
+					sstore 5;
+				L2:	getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sconst_0;
+					sload 4;
+					sconst_0;
+					invokestatic 114;		// javacard/framework/Util.arrayFillNonAtomic([BSSB)S
+					pop;
+					bspush 16;
+					sload 5;
+					sadd;
+					sreturn;
+		}
+
+		.method private decryptToScratch([BSS)S {
+			.stack 5;
+			.locals 0;
+
+				L0:	aload_0;
+					getfield_a_this 21;		// reference vault/VaultApplet.sessionMk
+					aload_1;
+					sload_2;
+					sload_3;
+					invokespecial 128;		// vault/VaultApplet.decryptToScratch(Ljavacard/security/AESKey;[BSS)S
+					sreturn;
+		}
+
+		.method private decryptToScratch(Ljavacard/security/AESKey;[BSS)S {
+			.stack 6;
+			.locals 1;
+
+			.descriptor	Ljavacard/security/AESKey;	1.20;
+
+				L0:	getfield_a_this 26;		// reference vault/VaultApplet.aesCbc
+					aload_1;
+					sconst_1;
+					aload_2;
+					sload_3;
+					bspush 16;
+					invokevirtual 135;		// init(Ljavacard/security/Key;B[BSS)V
+					getfield_a_this 26;		// reference vault/VaultApplet.aesCbc
+					aload_2;
+					sload_3;
+					bspush 16;
+					sadd;
+					sload 4;
+					bspush 16;
+					ssub;
+					getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sconst_0;
+					invokevirtual 126;		// doFinal([BSS[BS)S
+					sstore 5;
+				L1:	getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sload 5;
+					invokestatic 136;		// vault/VaultApplet.unpad([BS)S
+					sreturn;
+		}
+
+		.method private static pad([BS)S {
+			.stack 4;
+			.locals 0;
+
+				L0:	aload_0;
+					sload_1;
+					dup;
+					sconst_1;
+					sadd;
+					sstore_1;
+					bspush -128;
+					bastore;
+					goto L2;
+				L1:	aload_0;
+					sload_1;
+					dup;
+					sconst_1;
+					sadd;
+					sstore_1;
+					sconst_0;
+					bastore;
+				L2:	sload_1;
+					bspush 15;
+					sand;
+					ifne L1;
+				L3:	sload_1;
+					sreturn;
+		}
+
+		.method private static unpad([BS)S {
+			.stack 2;
+			.locals 1;
+
+				L0:	sload_1;
+					sconst_1;
+					ssub;
+					sstore_2;
+				L1:	goto L3;
+				L2:	sinc 2 -1;
+				L3:	sload_2;
+					iflt L5;
+				L4:	aload_0;
+					sload_2;
+					baload;
+					ifeq L2;
+				L5:	sload_2;
+					iflt L7;
+				L6:	aload_0;
+					sload_2;
+					baload;
+					bspush -128;
+					if_scmpeq L8;
+				L7:	sspush 27012;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L8:	sload_2;
+					sreturn;
+		}
+
+		.method private sendScratch(Ljavacard/framework/APDU;S)V {
+			.stack 5;
+			.locals 1;
+
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+				L0:	aload_1;
+					invokevirtual 43;		// getBuffer()[B
+					astore_3;
+				L1:	getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sconst_0;
+					aload_3;
+					sconst_0;
+					sload_2;
+					invokestatic 46;		// javacard/framework/Util.arrayCopyNonAtomic([BS[BSS)S
+					pop;
+					aload_0;
+					invokespecial 90;		// vault/VaultApplet.clearScratch()V
+					aload_1;
+					sconst_0;
+					sload_2;
+					invokevirtual 47;		// setOutgoingAndSend(SS)V
+					return;
+		}
+
+		.method private static checkTlv([BSSB[B[B)S {
+			.stack 3;
+			.locals 5;
+
+				L0:	sload_1;
+					sload_2;
+					sadd;
+					sstore 6;
+				L1:	sconst_0;
+					sstore 7;
+				L2:	goto L18;
+				L3:	sload_1;
+					sconst_2;
+					sadd;
+					sload 6;
+					if_scmple L5;
+				L4:	sspush 27264;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L5:	aload_0;
+					sload_1;
+					baload;
+					sload_3;
+					ssub;
+					sstore 8;
+				L6:	aload_0;
+					sload_1;
+					sconst_1;
+					sadd;
+					baload;
+					sspush 255;
+					sand;
+					sstore 9;
+				L7:	sload 8;
+					iflt L9;
+				L8:	sload 8;
+					aload 5;
+					arraylength;
+					if_scmplt L10;
+				L9:	sspush 27264;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L10:	sconst_1;
+					sload 8;
+					sshl;
+					sstore 10;
+				L11:	sload 7;
+					sload 10;
+					sand;
+					ifne L14;
+				L12:	sload 9;
+					aload 4;
+					sload 8;
+					baload;
+					if_scmplt L14;
+				L13:	sload 9;
+					aload 5;
+					sload 8;
+					baload;
+					if_scmple L15;
+				L14:	sspush 27264;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L15:	sload_1;
+					sconst_2;
+					sadd;
+					sload 9;
+					sadd;
+					sstore_1;
+					sload_1;
+					sload 6;
+					if_scmple L17;
+				L16:	sspush 27264;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L17:	sload 7;
+					sload 10;
+					sor;
+					sstore 7;
+				L18:	sload_1;
+					sload 6;
+					if_scmplt L3;
+				L19:	sload 7;
+					sreturn;
+		}
+
+		.method private static checkMeta([BSS)V {
+			.stack 6;
+			.locals 2;
+
+				L0:	aload_0;
+					sload_1;
+					sload_2;
+					bspush 16;
+					getstatic_a 137;		// reference vault/VaultApplet.META_MIN
+					getstatic_a 138;		// reference vault/VaultApplet.META_MAX
+					invokestatic 107;		// vault/VaultApplet.checkTlv([BSSB[B[B)S
+					sstore_3;
+				L1:	sload_3;
+					sconst_1;
+					sand;
+					ifne L3;
+				L2:	sspush 27264;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L3:	aload_0;
+					sload_1;
+					sload_2;
+					bspush 20;
+					invokestatic 118;		// vault/VaultApplet.findTag([BSSB)S
+					sstore 4;
+				L4:	sload 4;
+					iflt L8;
+				L5:	aload_0;
+					sload 4;
+					baload;
+					iflt L7;
+				L6:	aload_0;
+					sload 4;
+					baload;
+					sconst_5;
+					if_scmple L8;
+				L7:	sspush 27264;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L8:	return;
+		}
+
+		.method private static findTag([BSSB)S {
+			.stack 4;
+			.locals 1;
+
+				L0:	sload_1;
+					sload_2;
+					sadd;
+					sstore 4;
+				L1:	goto L5;
+				L2:	aload_0;
+					sload_1;
+					baload;
+					sload_3;
+					if_scmpne L4;
+				L3:	sload_1;
+					sconst_2;
+					sadd;
+					sreturn;
+				L4:	sload_1;
+					sconst_2;
+					sadd;
+					aload_0;
+					sload_1;
+					sconst_1;
+					sadd;
+					baload;
+					sspush 255;
+					sand;
+					sadd;
+					sstore_1;
+				L5:	sload_1;
+					sconst_2;
+					sadd;
+					sload 4;
+					if_scmple L2;
+				L6:	sconst_m1;
+					sreturn;
+		}
+
+		.method private tagContains(SB[BSS)Z {
+			.stack 4;
+			.locals 4;
+
+				L0:	getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sconst_0;
+					sload_1;
+					sload_2;
+					invokestatic 118;		// vault/VaultApplet.findTag([BSSB)S
+					sstore 6;
+				L1:	sload 6;
+					ifge L3;
+				L2:	sconst_0;
+					sreturn;
+				L3:	getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sload 6;
+					sconst_1;
+					ssub;
+					baload;
+					sspush 255;
+					sand;
+					sstore 7;
+				L4:	sconst_0;
+					sstore 8;
+				L5:	goto L14;
+				L6:	sconst_0;
+					sstore 9;
+				L7:	goto L9;
+				L8:	sinc 9 1;
+				L9:	sload 9;
+					sload 5;
+					if_scmpge L11;
+				L10:	getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sload 6;
+					sload 8;
+					sadd;
+					sload 9;
+					sadd;
+					baload;
+					invokestatic 139;		// vault/VaultApplet.lower(B)B
+					aload_3;
+					sload 4;
+					sload 9;
+					sadd;
+					baload;
+					invokestatic 139;		// vault/VaultApplet.lower(B)B
+					if_scmpeq L8;
+				L11:	sload 9;
+					sload 5;
+					if_scmpne L13;
+				L12:	sconst_1;
+					sreturn;
+				L13:	sinc 8 1;
+				L14:	sload 8;
+					sload 5;
+					sadd;
+					sload 7;
+					if_scmple L6;
+				L15:	sconst_0;
+					sreturn;
+		}
+
+		.method private static lower(B)B {
+			.stack 2;
+			.locals 0;
+
+				L0:	sload_0;
+					bspush 65;
+					if_scmplt L3;
+				L1:	sload_0;
+					bspush 90;
+					if_scmpgt L3;
+				L2:	sload_0;
+					bspush 32;
+					sadd;
+					s2b;
+					goto L4;
+				L3:	sload_0;
+				L4:	sreturn;
+		}
+
+		.method private static setBit([BS)V {
+			.stack 6;
+			.locals 0;
+
+				L0:	aload_0;
+					sload_1;
+					sconst_3;
+					sshr;
+					dup2;
+					baload;
+					sconst_1;
+					sload_1;
+					bspush 7;
+					sand;
+					sshl;
+					s2b;
+					sor;
+					bastore;
+					return;
+		}
+
+		.method private appendRange(SBS)S {
+			.stack 4;
+			.locals 1;
+
+				L0:	sconst_0;
+					sstore 4;
+				L1:	goto L3;
+				L2:	getfield_a_this 19;		// reference vault/VaultApplet.work
+					sload_1;
+					dup;
+					sconst_1;
+					sadd;
+					sstore_1;
+					sload_2;
+					sload 4;
+					sadd;
+					s2b;
+					bastore;
+					sinc 4 1;
+				L3:	sload 4;
+					sload_3;
+					if_scmplt L2;
+				L4:	sload_1;
+					sreturn;
+		}
+
+		.method private static charClasses([BS)B {
+			.stack 2;
+			.locals 3;
+
+				L0:	sconst_0;
+					sstore_2;
+				L1:	sconst_0;
+					sstore_3;
+				L2:	goto L15;
+				L3:	aload_0;
+					sload_3;
+					baload;
+					sstore 4;
+				L4:	sload 4;
+					bspush 97;
+					if_scmplt L7;
+				L5:	sload 4;
+					bspush 122;
+					if_scmpgt L7;
+				L6:	sload_2;
+					sconst_1;
+					sor;
+					sstore_2;
+					goto L14;
+				L7:	sload 4;
+					bspush 65;
+					if_scmplt L10;
+				L8:	sload 4;
+					bspush 90;
+					if_scmpgt L10;
+				L9:	sload_2;
+					sconst_2;
+					sor;
+					sstore_2;
+					goto L14;
+				L10:	sload 4;
+					bspush 48;
+					if_scmplt L13;
+				L11:	sload 4;
+					bspush 57;
+					if_scmpgt L13;
+				L12:	sload_2;
+					sconst_4;
+					sor;
+					sstore_2;
+					goto L14;
+				L13:	sload_2;
+					bspush 8;
+					sor;
+					sstore_2;
+				L14:	sinc 3 1;
+				L15:	sload_3;
+					sload_1;
+					if_scmplt L3;
+				L16:	sload_2;
+					sreturn;
+		}
+
+		.method private static checkPinFormat([BSS)V {
+			.stack 3;
+			.locals 2;
+
+				L0:	sload_2;
+					bspush 6;
+					if_scmplt L2;
+				L1:	sload_2;
+					bspush 12;
+					if_scmple L3;
+				L2:	sspush 27264;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L3:	sconst_0;
+					sstore_3;
+				L4:	goto L10;
+				L5:	aload_0;
+					sload_1;
+					sload_3;
+					sadd;
+					baload;
+					sstore 4;
+				L6:	sload 4;
+					bspush 32;
+					if_scmplt L8;
+				L7:	sload 4;
+					bspush 126;
+					if_scmple L9;
+				L8:	sspush 27264;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L9:	sinc 3 1;
+				L10:	sload_3;
+					sload_2;
+					if_scmplt L5;
+				L11:	return;
+		}
+
+		.method private static checkPukFormat([BSS)V {
+			.stack 3;
+			.locals 2;
+
+				L0:	sload_2;
+					bspush 8;
+					if_scmpeq L2;
+				L1:	sspush 27264;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L2:	sconst_0;
+					sstore_3;
+				L3:	goto L9;
+				L4:	aload_0;
+					sload_1;
+					sload_3;
+					sadd;
+					baload;
+					sstore 4;
+				L5:	sload 4;
+					bspush 48;
+					if_scmplt L7;
+				L6:	sload 4;
+					bspush 57;
+					if_scmple L8;
+				L7:	sspush 27264;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L8:	sinc 3 1;
+				L9:	sload_3;
+					sload_2;
+					if_scmplt L4;
+				L10:	return;
+		}
+
+		.method private static checkCardId([BS)V {
+			.stack 3;
+			.locals 2;
+
+				L0:	sconst_0;
+					sstore_2;
+				L1:	goto L9;
+				L2:	aload_0;
+					sload_1;
+					sload_2;
+					sadd;
+					baload;
+					sstore_3;
+				L3:	sload_3;
+					bspush 48;
+					if_scmplt L5;
+				L4:	sload_3;
+					bspush 57;
+					if_scmple L8;
+				L5:	sload_3;
+					bspush 65;
+					if_scmplt L7;
+				L6:	sload_3;
+					bspush 90;
+					if_scmple L8;
+				L7:	sspush 27264;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L8:	sinc 2 1;
+				L9:	sload_2;
+					bspush 8;
+					if_scmplt L2;
+				L10:	return;
+		}
+
+		.method private static receive(Ljavacard/framework/APDU;)S {
+			.stack 2;
+			.locals 2;
+
+			.descriptor	Ljavacard/framework/APDU;	0.10;
+
+				L0:	aload_0;
+					invokevirtual 140;		// setIncomingAndReceive()S
+					sstore_1;
+				L1:	aload_0;
+					invokevirtual 141;		// getIncomingLength()S
+					sstore_2;
+				L2:	sload_1;
+					sload_2;
+					if_scmpeq L4;
+				L3:	sspush 26368;
+					invokestatic 44;		// javacard/framework/ISOException.throwIt(S)V
+				L4:	sload_2;
+					sreturn;
+		}
+
+		.method private clearSession()V {
+			.stack 3;
+			.locals 0;
+
+				L0:	getfield_a_this 16;		// reference vault/VaultApplet.session
+					sconst_0;
+					sconst_0;
+					bastore;
+					getfield_a_this 21;		// reference vault/VaultApplet.sessionMk
+					invokeinterface 1 113 0;		// javacard/security/AESKey
+					getfield_a_this 23;		// reference vault/VaultApplet.restoreMk
+					invokeinterface 1 113 0;		// javacard/security/AESKey
+					return;
+		}
+
+		.method private clearScratch()V {
+			.stack 4;
+			.locals 0;
+
+				L0:	getfield_a_this 18;		// reference vault/VaultApplet.scratch
+					sconst_0;
+					sspush 256;
+					sconst_0;
+					invokestatic 114;		// javacard/framework/Util.arrayFillNonAtomic([BSSB)S
+					pop;
+					return;
+		}
+
+	}
+
+}
